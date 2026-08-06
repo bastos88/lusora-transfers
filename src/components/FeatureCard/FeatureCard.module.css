@@ -1,0 +1,40 @@
+.card {
+  text-align: center;
+}
+
+.iconWrap {
+  width: 6.25rem;
+  height: 5.75rem;
+  margin: 0 auto var(--space-lg);
+  display: grid;
+  place-items: center;
+  border: 0.125rem solid rgba(255, 255, 255, 0.84);
+  border-radius: var(--radius-lg);
+  transition: transform var(--transition-normal), border-color var(--transition-normal);
+}
+
+.card:hover .iconWrap {
+  transform: translateY(-0.25rem);
+  border-color: var(--color-accent);
+}
+
+.iconWrap img {
+  width: 4rem;
+  height: 4rem;
+  object-fit: contain;
+}
+
+.card h3 {
+  margin: 0 0 var(--space-sm);
+  color: var(--color-accent);
+  font-size: 0.875rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.card p {
+  margin: 0;
+  color: var(--color-text-on-dark-muted);
+  font-size: 0.875rem;
+  line-height: 1.7;
+}

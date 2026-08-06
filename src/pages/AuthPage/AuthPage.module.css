@@ -1,0 +1,287 @@
+.section,
+.accountSection {
+  min-height: 42rem;
+  padding: clamp(3rem, 8vw, 6rem) 0;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(255, 157, 0, 0.12), transparent 26rem),
+    var(--color-surface);
+}
+
+.layout {
+  width: min(68rem, calc(100% - 2rem));
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(22rem, 0.75fr);
+  align-items: center;
+  gap: clamp(2.5rem, 8vw, 7rem);
+}
+
+.intro {
+  max-width: 34rem;
+}
+
+.eyebrow {
+  margin: 0 0 var(--space-md);
+  color: var(--color-accent-deep);
+  font-size: 0.6875rem;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.intro h1,
+.accountCard h1 {
+  margin: 0;
+  color: var(--color-navy);
+  font-size: clamp(2.5rem, 6vw, 4.75rem);
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+}
+
+.intro > p:not(.eyebrow),
+.accountCard > p:not(.eyebrow) {
+  margin: var(--space-lg) 0 0;
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.benefits {
+  margin-top: var(--space-xl);
+  display: grid;
+  gap: 0.85rem;
+  color: var(--color-navy-soft);
+  font-size: 0.875rem;
+  font-weight: 800;
+}
+
+.benefits span {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.benefits svg {
+  color: var(--color-accent-deep);
+}
+
+.securityNote {
+  margin-top: var(--space-xl);
+  padding: var(--space-lg);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  background: rgba(255, 255, 255, 0.65);
+  font-size: 0.75rem;
+  line-height: 1.55;
+}
+
+.securityNote svg {
+  flex: 0 0 auto;
+  color: var(--color-accent-deep);
+}
+
+.securityNote strong {
+  display: block;
+  color: var(--color-navy);
+}
+
+.panel,
+.accountCard {
+  padding: clamp(1.5rem, 5vw, 2.5rem);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-white);
+  box-shadow: var(--shadow-md);
+}
+
+.tabs {
+  padding: 0.3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: 999px;
+  background: var(--color-surface);
+}
+
+.tabs button {
+  min-height: 2.75rem;
+  border-radius: 999px;
+  color: var(--color-text-secondary);
+  background: transparent;
+  font-size: 0.8125rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.tabs .activeTab {
+  color: var(--color-navy);
+  background: var(--color-accent);
+  box-shadow: var(--shadow-sm);
+}
+
+.formHeader {
+  margin-top: var(--space-xl);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+}
+
+.formIcon,
+.accountIcon {
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--color-navy);
+  background: var(--color-accent);
+}
+
+.formHeader h2 {
+  margin: 0;
+  color: var(--color-navy);
+  font-size: 1.35rem;
+}
+
+.formHeader p {
+  margin: 0.35rem 0 0;
+  color: var(--color-text-secondary);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.form {
+  margin-top: var(--space-xl);
+  display: grid;
+  gap: var(--space-md);
+}
+
+.form label:not(.checkbox) {
+  display: grid;
+  gap: 0.45rem;
+  color: var(--color-navy-soft);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.form input[type='text'],
+.form input[type='email'],
+.form input[type='tel'],
+.form input[type='password'] {
+  width: 100%;
+  min-height: 3.25rem;
+  padding: 0 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
+  background: var(--color-white);
+}
+
+.form input[aria-invalid='true'] {
+  border-color: #b53d32;
+}
+
+.checkbox {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 0.65rem;
+  color: var(--color-text-secondary);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.checkbox input {
+  margin-top: 0.15rem;
+  accent-color: var(--color-accent-deep);
+}
+
+.checkbox .error {
+  grid-column: 2;
+}
+
+.error {
+  color: #a9342b;
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+.submitButton,
+.primaryButton,
+.secondaryButton {
+  min-height: 3.25rem;
+  padding: 0 var(--space-lg);
+  border-radius: var(--radius-sm);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.submitButton,
+.primaryButton {
+  color: var(--color-navy);
+  background: var(--color-accent);
+}
+
+.submitButton:hover,
+.primaryButton:hover {
+  background: var(--color-accent-light);
+}
+
+.accountSection {
+  display: grid;
+  place-items: center;
+}
+
+.accountCard {
+  width: min(42rem, calc(100% - 2rem));
+  text-align: center;
+}
+
+.accountIcon {
+  margin: 0 auto var(--space-lg);
+}
+
+.accountCard h1 {
+  font-size: clamp(2.25rem, 6vw, 4rem);
+}
+
+.accountActions {
+  margin-top: var(--space-xl);
+  display: flex;
+  justify-content: center;
+  gap: var(--space-md);
+}
+
+.secondaryButton {
+  color: var(--color-navy);
+  border: 1px solid var(--color-border);
+  background: var(--color-white);
+}
+
+.secondaryButton:hover {
+  border-color: var(--color-navy);
+}
+
+@media (max-width: 52rem) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .intro {
+    max-width: none;
+  }
+}
+
+@media (max-width: 32rem) {
+  .layout {
+    width: min(100% - 1.25rem, 68rem);
+  }
+
+  .accountActions {
+    flex-direction: column;
+  }
+}

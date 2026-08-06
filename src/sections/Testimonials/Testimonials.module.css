@@ -1,0 +1,9 @@
+.section {
+  padding: var(--section-space) 0;
+  background: var(--color-surface);
+}
+
+.inner {
+  width: min(var(--content-width), calc(100% - 2rem));
+  margin-inline: auto;
+}

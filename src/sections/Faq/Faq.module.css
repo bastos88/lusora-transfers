@@ -1,0 +1,40 @@
+.section {
+  padding: var(--section-space) 0;
+  background: var(--color-navy-soft);
+}
+
+.inner {
+  width: min(var(--content-width), calc(100% - 2rem));
+  margin-inline: auto;
+}
+
+.list {
+  max-width: 52rem;
+  margin-inline: auto;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.item {
+  border: 1px solid var(--color-border-on-dark);
+  border-radius: var(--radius-sm);
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.item summary {
+  padding: 1.125rem 1.25rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.item summary::marker {
+  color: var(--color-accent);
+}
+
+.item p {
+  margin: 0;
+  padding: 0 1.25rem 1.25rem;
+  color: var(--color-text-on-dark-muted);
+  line-height: 1.75;
+}

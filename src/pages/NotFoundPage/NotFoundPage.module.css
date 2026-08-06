@@ -1,0 +1,46 @@
+.section {
+  min-height: 42rem;
+  padding: var(--section-space) 1rem;
+  display: grid;
+  place-items: center;
+  background: var(--color-surface);
+  text-align: center;
+}
+
+.section > div {
+  max-width: 44rem;
+}
+
+.section p {
+  margin: 0 0 0.6rem;
+  color: var(--color-accent-deep);
+  font-size: 0.6875rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.section h1 {
+  margin: 0;
+  color: var(--color-navy);
+  font-size: clamp(2.75rem, 7vw, 5rem);
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+}
+
+.section span {
+  display: block;
+  margin-top: var(--space-lg);
+  color: var(--color-text-secondary);
+}
+
+.section button {
+  min-height: 3.25rem;
+  margin-top: var(--space-xl);
+  padding: 0 var(--space-xl);
+  border-radius: var(--radius-sm);
+  color: var(--color-navy);
+  background: var(--color-accent);
+  font-weight: 900;
+  cursor: pointer;
+}

@@ -1,0 +1,27 @@
+.section {
+  padding: var(--section-space) 0;
+  background: linear-gradient(135deg, var(--color-navy-soft), #253550);
+}
+
+.inner {
+  width: min(var(--content-width), calc(100% - 2rem));
+  margin-inline: auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(1.5rem, 4vw, 3.25rem);
+}
+
+@media (max-width: 53rem) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 32rem) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

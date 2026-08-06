@@ -1,0 +1,76 @@
+.section {
+  padding: var(--section-space) 0;
+  background: var(--color-white);
+}
+
+.inner {
+  width: min(var(--content-width), calc(100% - 2rem));
+  margin-inline: auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-lg);
+}
+
+.selection {
+  margin-top: var(--space-xl);
+  padding: clamp(1.25rem, 4vw, 2rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xl);
+  border-radius: var(--radius-md);
+  color: var(--color-white);
+  background: linear-gradient(135deg, var(--color-navy), var(--color-navy-soft));
+}
+
+.selection span {
+  color: var(--color-accent);
+  font-size: 0.6875rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.selection h3 {
+  margin: 0.35rem 0 0.25rem;
+  font-size: 1.5rem;
+}
+
+.selection p {
+  margin: 0;
+  color: var(--color-text-on-dark-muted);
+  font-size: 0.8125rem;
+}
+
+.selection a {
+  min-height: 3.25rem;
+  padding: 0 var(--space-xl);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  color: var(--color-navy);
+  background: var(--color-accent);
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+@media (max-width: 64rem) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 38rem) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .selection {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,237 @@
+.pageHero {
+  padding: clamp(3.5rem, 8vw, 6rem) 0 clamp(4rem, 9vw, 7rem);
+  color: var(--color-white);
+  background:
+    radial-gradient(circle at 82% 20%, rgba(255, 157, 0, 0.25), transparent 24rem),
+    linear-gradient(145deg, #142038, #263b5b);
+}
+
+.pageHero > div,
+.content {
+  width: min(var(--content-width), calc(100% - 2rem));
+  margin-inline: auto;
+}
+
+.eyebrow,
+.sectionHeader p,
+.pendingSummary > p {
+  margin: 0 0 0.55rem;
+  color: var(--color-accent);
+  font-size: 0.6875rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.pageHero h1 {
+  max-width: 50rem;
+  margin: 0;
+  font-size: clamp(2.75rem, 7vw, 5.75rem);
+  line-height: 0.95;
+  letter-spacing: -0.055em;
+}
+
+.pageHero > div > p:last-child {
+  max-width: 43rem;
+  margin: var(--space-lg) 0 0;
+  color: var(--color-text-on-dark-muted);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.content {
+  padding: clamp(2rem, 5vw, 4rem) 0 var(--section-space);
+}
+
+.layout {
+  margin-top: var(--space-xl);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 23rem);
+  align-items: start;
+  gap: clamp(2rem, 5vw, 4rem);
+}
+
+.options {
+  min-width: 0;
+  display: grid;
+  gap: clamp(3rem, 7vw, 5rem);
+}
+
+.optionSection {
+  min-width: 0;
+}
+
+.sectionHeader {
+  margin-bottom: var(--space-xl);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+}
+
+.sectionHeader > span {
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--color-navy);
+  background: var(--color-accent);
+  font-size: 0.8125rem;
+  font-weight: 900;
+}
+
+.sectionHeader p {
+  color: var(--color-accent-deep);
+}
+
+.sectionHeader h2 {
+  margin: 0;
+  color: var(--color-navy);
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  line-height: 1.15;
+}
+
+.serviceGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-md);
+}
+
+.vehicleGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-lg);
+}
+
+.summaryColumn {
+  position: sticky;
+  top: var(--space-lg);
+}
+
+.continueButton {
+  width: 100%;
+  min-height: 3.5rem;
+  padding: 0 var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  border-radius: var(--radius-sm);
+  color: var(--color-navy);
+  background: var(--color-accent);
+  font-size: 0.8125rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.continueButton:hover {
+  transform: translateY(-0.125rem);
+  background: var(--color-accent-light);
+}
+
+.pendingSummary {
+  padding: clamp(1.25rem, 4vw, 2rem);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-white);
+  box-shadow: var(--shadow-sm);
+}
+
+.pendingSummary > p {
+  color: var(--color-accent-deep);
+}
+
+.pendingSummary h2 {
+  margin: 0;
+  color: var(--color-navy);
+  font-size: 1.5rem;
+}
+
+.pendingSummary > span {
+  display: block;
+  margin-top: var(--space-md);
+  color: var(--color-text-secondary);
+  font-size: 0.75rem;
+  line-height: 1.65;
+}
+
+.pendingSummary > div {
+  height: 0.75rem;
+  margin-top: var(--space-lg);
+  border-radius: 999px;
+  background: var(--color-surface);
+}
+
+.pendingSummary > div:nth-of-type(2) {
+  width: 78%;
+}
+
+.pendingSummary > div:nth-of-type(3) {
+  width: 58%;
+}
+
+.emptyState {
+  min-height: 42rem;
+  padding: var(--section-space) 1rem;
+  display: grid;
+  place-items: center;
+  background: var(--color-surface);
+  text-align: center;
+}
+
+.emptyState > div {
+  max-width: 42rem;
+}
+
+.emptyState .eyebrow {
+  color: var(--color-accent-deep);
+}
+
+.emptyState h1 {
+  margin: 0;
+  color: var(--color-navy);
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+}
+
+.emptyState p:not(.eyebrow) {
+  margin: var(--space-lg) auto 0;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+.emptyState button {
+  min-height: 3.25rem;
+  margin-top: var(--space-xl);
+  padding: 0 var(--space-xl);
+  border-radius: var(--radius-sm);
+  color: var(--color-navy);
+  background: var(--color-accent);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+@media (max-width: 70rem) {
+  .serviceGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 60rem) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .summaryColumn {
+    position: static;
+  }
+}
+
+@media (max-width: 42rem) {
+  .vehicleGrid {
+    grid-template-columns: 1fr;
+  }
+}

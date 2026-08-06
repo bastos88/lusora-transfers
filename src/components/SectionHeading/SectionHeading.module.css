@@ -1,0 +1,37 @@
+.heading {
+  max-width: 47rem;
+  margin: 0 auto var(--space-2xl);
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0 0 var(--space-sm);
+  color: var(--color-accent-deep);
+  font-size: 0.8125rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.heading h2 {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+}
+
+.description {
+  max-width: 42rem;
+  margin: var(--space-md) auto 0;
+  color: var(--color-text-secondary);
+  line-height: 1.75;
+}
+
+.inverse h2 {
+  color: var(--color-white);
+}
+
+.inverse .description {
+  color: var(--color-text-on-dark-muted);
+}
