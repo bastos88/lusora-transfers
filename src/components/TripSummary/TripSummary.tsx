@@ -7,39 +7,62 @@ interface TripSummaryProps {
   booking: BookingFormValues;
   onNavigate: NavigateFunction;
   compact?: boolean;
+  editable?: boolean;
 }
 
-export function TripSummary({ booking, onNavigate, compact = false }: TripSummaryProps) {
-  const returnLabel = booking.tripType === 'round-trip'
-    ? formatBookingDate(booking.returnDate, booking.returnTime)
-    : 'Apenas ida';
+export function TripSummary({ booking, onNavigate, compact = false, editable = true }: TripSummaryProps) {
+  const returnLabel =
+    booking.tripType === 'round-trip'
+      ? formatBookingDate(booking.returnDate, booking.returnTime)
+      : 'Apenas ida';
 
   return (
-    <section className={`${styles.card} ${compact ? styles.compact : ''}`} aria-labelledby="trip-summary-title">
+    <section
+      className={`${styles.card} ${compact ? styles.compact : ''}`}
+      aria-labelledby="trip-summary-title"
+    >
       <div className={styles.header}>
         <div>
           <p>Resumo da viagem</p>
-          <h2 id="trip-summary-title">{booking.origin} <span aria-hidden="true">→</span> {booking.destination}</h2>
+          <h2 id="trip-summary-title">
+            {booking.origin?.label} <span aria-hidden="true">→</span> {booking.destination?.label}
+          </h2>
         </div>
-        <button type="button" onClick={() => onNavigate('/#reserva')}>Alterar</button>
+        {editable ? (
+          <button type="button" onClick={() => onNavigate('/#reserva')}>
+            Alterar
+          </button>
+        ) : null}
       </div>
 
       <div className={styles.details}>
         <div>
           <LocationIcon />
-          <span><strong>Recolha</strong>{booking.origin}</span>
+          <span>
+            <strong>Recolha</strong>
+            {booking.origin?.label}
+          </span>
         </div>
         <div>
           <CalendarIcon />
-          <span><strong>Partida</strong>{formatBookingDate(booking.departureDate, booking.departureTime)}</span>
+          <span>
+            <strong>Partida</strong>
+            {formatBookingDate(booking.departureDate, booking.departureTime)}
+          </span>
         </div>
         <div>
           <CalendarIcon />
-          <span><strong>Volta</strong>{returnLabel}</span>
+          <span>
+            <strong>Volta</strong>
+            {returnLabel}
+          </span>
         </div>
         <div>
           <UsersIcon />
-          <span><strong>Passageiros</strong>{booking.passengers}</span>
+          <span>
+            <strong>Passageiros</strong>
+            {booking.passengers}
+          </span>
         </div>
       </div>
     </section>

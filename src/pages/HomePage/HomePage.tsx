@@ -11,19 +11,22 @@ import type { AuthUser, BookingFormValues, NavigateFunction } from '../../types/
 
 interface HomePageProps {
   user: AuthUser | null;
+  booking: BookingFormValues | null;
   onBookingSubmit: (values: BookingFormValues) => void;
   onNavigate: NavigateFunction;
 }
 
-export function HomePage({ user, onBookingSubmit, onNavigate }: HomePageProps) {
+export function HomePage({ user, booking, onBookingSubmit, onNavigate }: HomePageProps) {
   const [selectedVehicleId, setSelectedVehicleId] = useState(vehicles[0]?.id ?? 'standard');
 
   const handleVehicleSelect = (vehicleId: string) => setSelectedVehicleId(vehicleId);
 
   return (
     <>
-      <a className="skip-link" href="#conteudo-principal">Saltar para o conteúdo</a>
-      <Hero onBookingSubmit={onBookingSubmit} onNavigate={onNavigate} user={user} />
+      <a className="skip-link" href="#conteudo-principal">
+        Saltar para o conteúdo
+      </a>
+      <Hero booking={booking} onBookingSubmit={onBookingSubmit} onNavigate={onNavigate} user={user} />
       <TrustBar />
       <main id="conteudo-principal">
         <Features />
@@ -31,7 +34,7 @@ export function HomePage({ user, onBookingSubmit, onNavigate }: HomePageProps) {
         <Fleet selectedVehicleId={selectedVehicleId} onVehicleSelect={handleVehicleSelect} />
         <Faq />
       </main>
-      <Footer onNavigate={onNavigate} />
+      <Footer onNavigate={onNavigate} isAuthenticated={Boolean(user)} />
     </>
   );
 }

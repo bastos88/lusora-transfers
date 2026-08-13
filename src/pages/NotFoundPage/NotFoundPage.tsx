@@ -9,13 +9,19 @@ interface NotFoundPageProps {
 
 export function NotFoundPage({ user, onNavigate }: NotFoundPageProps) {
   return (
-    <PageShell onNavigate={onNavigate} accountLabel={user ? `Olá, ${user.name.split(' ')[0]}` : 'Entrar'}>
+    <PageShell
+      onNavigate={onNavigate}
+      accountLabel={user ? `Olá, ${user.name.split(' ')[0]}` : 'Entrar'}
+      isAuthenticated={Boolean(user)}
+    >
       <section className={styles.section}>
         <div>
           <p>Erro 404</p>
           <h1>Esta página não existe.</h1>
           <span>Volte ao início para pesquisar uma nova viagem.</span>
-          <button type="button" onClick={() => onNavigate('/')}>Voltar ao início</button>
+          <button type="button" onClick={() => onNavigate('/')}>
+            Voltar ao início
+          </button>
         </div>
       </section>
     </PageShell>

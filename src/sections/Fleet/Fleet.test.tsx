@@ -12,7 +12,7 @@ describe('Fleet', () => {
     expect(screen.getByRole('button', { name: /Standard/ })).toHaveAttribute('aria-pressed', 'true');
     expect(screen.getAllByRole('button')).toHaveLength(4);
 
-    await user.click(screen.getByRole('button', { name: /Executivo/ }));
+    await user.click(screen.getAllByRole('button', { name: /Executivo/ })[0]);
     expect(handleVehicleSelect).toHaveBeenCalledWith('executive');
   });
 });

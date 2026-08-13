@@ -37,30 +37,44 @@ export function TransfersPage({
 
   if (!booking) {
     return (
-      <PageShell onNavigate={onNavigate} accountLabel={user ? `Olá, ${user.name.split(' ')[0]}` : 'Entrar'}>
+      <PageShell
+        onNavigate={onNavigate}
+        accountLabel={user ? `Olá, ${user.name.split(' ')[0]}` : 'Entrar'}
+        isAuthenticated={Boolean(user)}
+      >
         <section className={styles.emptyState}>
           <div>
             <p className={styles.eyebrow}>Escolha do transfer</p>
             <h1>Comece por indicar a sua viagem.</h1>
-            <p>A origem, o destino e a data são necessários para apresentar os serviços e veículos disponíveis.</p>
-            <button type="button" onClick={() => onNavigate('/#reserva')}>Pesquisar uma viagem</button>
+            <p>
+              A origem, o destino e a data são necessários para apresentar os serviços e veículos disponíveis.
+            </p>
+            <button type="button" onClick={() => onNavigate('/#reserva')}>
+              Pesquisar uma viagem
+            </button>
           </div>
         </section>
       </PageShell>
     );
   }
 
-  const pricing = selectedService && selectedVehicle
-    ? calculatePricing(booking, selectedService, selectedVehicle)
-    : null;
+  const pricing =
+    selectedService && selectedVehicle ? calculatePricing(booking, selectedService, selectedVehicle) : null;
 
   return (
-    <PageShell onNavigate={onNavigate} accountLabel={user ? `Olá, ${user.name.split(' ')[0]}` : 'Entrar'}>
+    <PageShell
+      onNavigate={onNavigate}
+      accountLabel={user ? `Olá, ${user.name.split(' ')[0]}` : 'Entrar'}
+      isAuthenticated={Boolean(user)}
+    >
       <section className={styles.pageHero}>
         <div>
           <p className={styles.eyebrow}>Transfer disponível</p>
           <h1>Escolha como quer viajar.</h1>
-          <p>Compare os serviços, selecione a viatura adequada ao grupo e veja o preço estimado antes do checkout.</p>
+          <p>
+            Compare os serviços, selecione a viatura adequada ao grupo e veja o preço estimado antes do
+            checkout.
+          </p>
         </div>
       </section>
 
@@ -96,15 +110,17 @@ export function TransfersPage({
                 <span>2</span>
                 <div>
                   <p>Veículo</p>
-                  <h2 id="vehicle-title">Escolha a viatura para {booking.passengers} {booking.passengers === 1 ? 'passageiro' : 'passageiros'}</h2>
+                  <h2 id="vehicle-title">
+                    Escolha a viatura para {booking.passengers}{' '}
+                    {booking.passengers === 1 ? 'passageiro' : 'passageiros'}
+                  </h2>
                 </div>
               </div>
               <div className={styles.vehicleGrid}>
                 {vehicles.map((vehicle) => {
                   const isUnavailable = booking.passengers > vehicle.capacity;
-                  const priceLabel = vehicle.supplement === 0
-                    ? 'Incluído'
-                    : `+ ${formatCurrency(vehicle.supplement)}`;
+                  const priceLabel =
+                    vehicle.supplement === 0 ? 'Incluído' : `+ ${formatCurrency(vehicle.supplement)}`;
 
                   return (
                     <VehicleCard
@@ -113,9 +129,15 @@ export function TransfersPage({
                       isSelected={vehicle.id === selectedVehicleId}
                       onSelect={onVehicleSelect}
                       priceLabel={priceLabel}
-                      badge={vehicle.id === 'minivan-executive' && booking.passengers > 7 ? 'Recomendado' : undefined}
+                      badge={
+                        vehicle.id === 'minivan-executive' && booking.passengers > 7
+                          ? 'Recomendado'
+                          : undefined
+                      }
                       disabled={isUnavailable}
-                      disabledMessage={isUnavailable ? `Capacidade máxima: ${vehicle.capacity} passageiros` : undefined}
+                      disabledMessage={
+                        isUnavailable ? `Capacidade máxima: ${vehicle.capacity} passageiros` : undefined
+                      }
                     />
                   );
                 })}

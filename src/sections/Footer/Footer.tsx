@@ -6,9 +6,10 @@ import styles from './Footer.module.css';
 
 interface FooterProps {
   onNavigate?: NavigateFunction;
+  isAuthenticated?: boolean;
 }
 
-export function Footer({ onNavigate }: FooterProps) {
+export function Footer({ onNavigate, isAuthenticated = false }: FooterProps) {
   const handleNavigation = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
     if (!onNavigate) {
       return;
@@ -22,7 +23,11 @@ export function Footer({ onNavigate }: FooterProps) {
     <footer className={styles.footer}>
       <div className={styles.main}>
         <div className={styles.brandColumn}>
-          <a href="/" aria-label="Getting Travel — voltar ao início" onClick={(event: MouseEvent<HTMLAnchorElement>) => handleNavigation(event, '/')}>
+          <a
+            href="/"
+            aria-label="Getting Travel — voltar ao início"
+            onClick={(event: MouseEvent<HTMLAnchorElement>) => handleNavigation(event, '/')}
+          >
             <img src={logo} alt="Getting Travel" width="1100" height="330" loading="lazy" />
           </a>
           <p>Transfers privados no Porto com conforto, pontualidade e uma experiência de reserva simples.</p>
@@ -31,10 +36,25 @@ export function Footer({ onNavigate }: FooterProps) {
         <div className={styles.column}>
           <h2>Navegação</h2>
           {navigationItems.map((item) => {
-            const href = `/${item.href}`;
-            return <a key={item.id} href={href} onClick={(event: MouseEvent<HTMLAnchorElement>) => handleNavigation(event, href)}>{item.label}</a>;
+            const href = item.id === 'booking' && isAuthenticated ? '/minha-reserva' : `/${item.href}`;
+            return (
+              <a
+                key={item.id}
+                href={href}
+                onClick={(event: MouseEvent<HTMLAnchorElement>) => handleNavigation(event, href)}
+              >
+                {item.label}
+              </a>
+            );
           })}
-          <a href="/conta" onClick={(event: MouseEvent<HTMLAnchorElement>) => handleNavigation(event, '/conta')}>Área do cliente</a>
+          <a
+            href={isAuthenticated ? '/informacoes-pessoais' : '/conta'}
+            onClick={(event: MouseEvent<HTMLAnchorElement>) =>
+              handleNavigation(event, isAuthenticated ? '/informacoes-pessoais' : '/conta')
+            }
+          >
+            {isAuthenticated ? 'Informações pessoais' : 'Área do cliente'}
+          </a>
         </div>
 
         <div className={styles.column}>

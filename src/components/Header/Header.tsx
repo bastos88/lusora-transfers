@@ -10,9 +10,15 @@ interface HeaderProps {
   variant?: 'overlay' | 'solid';
   onNavigate?: NavigateFunction;
   accountLabel?: string;
+  isAuthenticated?: boolean;
 }
 
-export function Header({ variant = 'overlay', onNavigate, accountLabel = 'Entrar' }: HeaderProps) {
+export function Header({
+  variant = 'overlay',
+  onNavigate,
+  accountLabel = 'Entrar',
+  isAuthenticated = false,
+}: HeaderProps) {
   const { isOpen, handleMenuToggle, handleMenuClose } = useMobileMenu();
 
   const handleInternalNavigation = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -57,7 +63,7 @@ export function Header({ variant = 'overlay', onNavigate, accountLabel = 'Entrar
           aria-label="Navegação principal"
         >
           {navigationItems.map((item) => {
-            const href = `/${item.href}`;
+            const href = item.id === 'booking' && isAuthenticated ? '/minha-reserva' : `/${item.href}`;
 
             return (
               <a
@@ -71,8 +77,10 @@ export function Header({ variant = 'overlay', onNavigate, accountLabel = 'Entrar
           })}
           <a
             className={styles.accountLink}
-            href="/conta"
-            onClick={(event: MouseEvent<HTMLAnchorElement>) => handleInternalNavigation(event, '/conta')}
+            href={isAuthenticated ? '/informacoes-pessoais' : '/conta'}
+            onClick={(event: MouseEvent<HTMLAnchorElement>) =>
+              handleInternalNavigation(event, isAuthenticated ? '/informacoes-pessoais' : '/conta')
+            }
           >
             <UserIcon />
             <span>{accountLabel}</span>

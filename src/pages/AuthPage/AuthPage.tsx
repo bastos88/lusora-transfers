@@ -19,16 +19,39 @@ export function AuthPage({ user, onAuthenticated, onLogout, onNavigate }: AuthPa
 
   if (user) {
     return (
-      <PageShell onNavigate={onNavigate} accountLabel={`Olá, ${user.name.split(' ')[0]}`}>
+      <PageShell onNavigate={onNavigate} accountLabel={`Olá, ${user.name.split(' ')[0]}`} isAuthenticated>
         <section className={styles.accountSection}>
           <div className={styles.accountCard}>
-            <span className={styles.accountIcon}><CheckIcon /></span>
+            <span className={styles.accountIcon}>
+              <CheckIcon />
+            </span>
             <p className={styles.eyebrow}>Área do cliente</p>
             <h1>Olá, {user.name}</h1>
-            <p>Tem sessão iniciada com <strong>{user.email}</strong>. As próximas reservas poderão utilizar estes dados para agilizar o checkout.</p>
+            <p>
+              Tem sessão iniciada com <strong>{user.email}</strong>. As próximas reservas poderão utilizar
+              estes dados para agilizar o checkout.
+            </p>
             <div className={styles.accountActions}>
-              <button type="button" className={styles.primaryButton} onClick={() => onNavigate('/#reserva')}>Fazer uma reserva</button>
-              <button type="button" className={styles.secondaryButton} onClick={onLogout}>Terminar sessão</button>
+              <button
+                type="button"
+                className={styles.primaryButton}
+                onClick={() => onNavigate('/minha-reserva')}
+              >
+                Minha reserva
+              </button>
+              <button
+                type="button"
+                className={styles.secondaryButton}
+                onClick={() => onNavigate('/informacoes-pessoais')}
+              >
+                Informações pessoais
+              </button>
+              <button type="button" className={styles.primaryButton} onClick={() => onNavigate('/#reserva')}>
+                Fazer uma reserva
+              </button>
+              <button type="button" className={styles.secondaryButton} onClick={onLogout}>
+                Terminar sessão
+              </button>
             </div>
           </div>
         </section>
@@ -43,17 +66,28 @@ export function AuthPage({ user, onAuthenticated, onLogout, onNavigate }: AuthPa
           <aside className={styles.intro}>
             <p className={styles.eyebrow}>Área do cliente</p>
             <h1 id="auth-title">A sua viagem, organizada num só lugar.</h1>
-            <p>Crie uma conta para preencher os seus dados mais rapidamente e manter a experiência de reserva simples.</p>
+            <p>
+              Crie uma conta para preencher os seus dados mais rapidamente e manter a experiência de reserva
+              simples.
+            </p>
 
             <div className={styles.benefits}>
-              <span><CheckIcon /> Checkout mais rápido</span>
-              <span><CheckIcon /> Dados de contacto reutilizáveis</span>
-              <span><CheckIcon /> Experiência preparada para histórico de reservas</span>
+              <span>
+                <CheckIcon /> Checkout mais rápido
+              </span>
+              <span>
+                <CheckIcon /> Dados de contacto reutilizáveis
+              </span>
+              <span>
+                <CheckIcon /> Experiência preparada para histórico de reservas
+              </span>
             </div>
 
             <div className={styles.securityNote}>
               <ShieldIcon />
-              <span><strong>Demonstração frontend</strong> Esta versão não envia credenciais para nenhum servidor.</span>
+              <span>
+                <strong>Demonstração frontend</strong> Esta versão não envia credenciais para nenhum servidor.
+              </span>
             </div>
           </aside>
 
@@ -80,10 +114,16 @@ export function AuthPage({ user, onAuthenticated, onLogout, onNavigate }: AuthPa
             </div>
 
             <div className={styles.formHeader}>
-              <span className={styles.formIcon}><LockIcon /></span>
+              <span className={styles.formIcon}>
+                <LockIcon />
+              </span>
               <div>
                 <h2>{mode === 'login' ? 'Bem-vindo novamente' : 'Comece a viajar connosco'}</h2>
-                <p>{mode === 'login' ? 'Introduza os seus dados para continuar.' : 'Preencha os dados abaixo para criar a sua conta.'}</p>
+                <p>
+                  {mode === 'login'
+                    ? 'Introduza os seus dados para continuar.'
+                    : 'Preencha os dados abaixo para criar a sua conta.'}
+                </p>
               </div>
             </div>
 
@@ -99,7 +139,11 @@ export function AuthPage({ user, onAuthenticated, onLogout, onNavigate }: AuthPa
                     aria-invalid={Boolean(errors.name)}
                     aria-describedby={errors.name ? 'auth-name-error' : undefined}
                   />
-                  {errors.name ? <small className={styles.error} id="auth-name-error">{errors.name}</small> : null}
+                  {errors.name ? (
+                    <small className={styles.error} id="auth-name-error">
+                      {errors.name}
+                    </small>
+                  ) : null}
                 </label>
               ) : null}
 
@@ -113,7 +157,11 @@ export function AuthPage({ user, onAuthenticated, onLogout, onNavigate }: AuthPa
                   aria-invalid={Boolean(errors.email)}
                   aria-describedby={errors.email ? 'auth-email-error' : undefined}
                 />
-                {errors.email ? <small className={styles.error} id="auth-email-error">{errors.email}</small> : null}
+                {errors.email ? (
+                  <small className={styles.error} id="auth-email-error">
+                    {errors.email}
+                  </small>
+                ) : null}
               </label>
 
               {mode === 'register' ? (
@@ -127,7 +175,11 @@ export function AuthPage({ user, onAuthenticated, onLogout, onNavigate }: AuthPa
                     aria-invalid={Boolean(errors.phone)}
                     aria-describedby={errors.phone ? 'auth-phone-error' : undefined}
                   />
-                  {errors.phone ? <small className={styles.error} id="auth-phone-error">{errors.phone}</small> : null}
+                  {errors.phone ? (
+                    <small className={styles.error} id="auth-phone-error">
+                      {errors.phone}
+                    </small>
+                  ) : null}
                 </label>
               ) : null}
 
@@ -141,7 +193,11 @@ export function AuthPage({ user, onAuthenticated, onLogout, onNavigate }: AuthPa
                   aria-invalid={Boolean(errors.password)}
                   aria-describedby={errors.password ? 'auth-password-error' : undefined}
                 />
-                {errors.password ? <small className={styles.error} id="auth-password-error">{errors.password}</small> : null}
+                {errors.password ? (
+                  <small className={styles.error} id="auth-password-error">
+                    {errors.password}
+                  </small>
+                ) : null}
               </label>
 
               {mode === 'register' ? (
@@ -149,12 +205,18 @@ export function AuthPage({ user, onAuthenticated, onLogout, onNavigate }: AuthPa
                   <input
                     type="checkbox"
                     checked={values.acceptTerms}
-                    onChange={(event: ChangeEvent<HTMLInputElement>) => updateField('acceptTerms', event.target.checked)}
+                    onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                      updateField('acceptTerms', event.target.checked)
+                    }
                     aria-invalid={Boolean(errors.acceptTerms)}
                     aria-describedby={errors.acceptTerms ? 'auth-terms-error' : undefined}
                   />
                   <span>Aceito os termos e a política de privacidade.</span>
-                  {errors.acceptTerms ? <small className={styles.error} id="auth-terms-error">{errors.acceptTerms}</small> : null}
+                  {errors.acceptTerms ? (
+                    <small className={styles.error} id="auth-terms-error">
+                      {errors.acceptTerms}
+                    </small>
+                  ) : null}
                 </label>
               ) : null}
 

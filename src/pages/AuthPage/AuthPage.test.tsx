@@ -9,12 +9,7 @@ describe('AuthPage', () => {
     const handleAuthenticated = vi.fn();
 
     render(
-      <AuthPage
-        user={null}
-        onAuthenticated={handleAuthenticated}
-        onLogout={vi.fn()}
-        onNavigate={vi.fn()}
-      />,
+      <AuthPage user={null} onAuthenticated={handleAuthenticated} onLogout={vi.fn()} onNavigate={vi.fn()} />,
     );
 
     await user.click(screen.getByRole('tab', { name: 'Criar conta' }));
@@ -28,6 +23,7 @@ describe('AuthPage', () => {
     expect(handleAuthenticated).toHaveBeenCalledWith({
       name: 'Leonardo Bastos',
       email: 'leonardo@example.com',
+      phone: '912345678',
     });
   });
 });

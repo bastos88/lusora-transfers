@@ -6,6 +6,7 @@ import { useStoredState } from './hooks/useStoredState';
 import { AuthPage } from './pages/AuthPage/AuthPage';
 import { CheckoutPage } from './pages/CheckoutPage/CheckoutPage';
 import { ConfirmationPage } from './pages/ConfirmationPage/ConfirmationPage';
+import { CustomerAreaPage } from './pages/CustomerAreaPage/CustomerAreaPage';
 import { HomePage } from './pages/HomePage/HomePage';
 import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage';
 import { TransfersPage } from './pages/TransfersPage/TransfersPage';
@@ -17,10 +18,13 @@ import type {
   NavigateFunction,
 } from './types/travel';
 import { calculatePricing } from './utils/pricing';
+import { parseStoredBooking, parseStoredConfirmation } from './utils/bookingStorage';
 
 const pageTitles: Record<string, string> = {
   '/': 'Getting Travel | Transfer privado no Porto',
   '/conta': 'Área do cliente | Getting Travel',
+  '/minha-reserva': 'Minha reserva | Getting Travel',
+  '/informacoes-pessoais': 'Informações pessoais | Getting Travel',
   '/transfers': 'Escolher transfer e veículo | Getting Travel',
   '/checkout': 'Checkout | Getting Travel',
   '/confirmacao': 'Reserva confirmada | Getting Travel',
@@ -35,10 +39,26 @@ function createReference(): string {
 
 export default function App() {
   const { pathname, navigate } = useAppRouter();
-  const [booking, setBooking] = useStoredState<BookingFormValues | null>('getting-travel-booking', null);
-  const [selectedServiceId, setSelectedServiceId] = useStoredState<string | null>('getting-travel-service', null);
-  const [selectedVehicleId, setSelectedVehicleId] = useStoredState<string | null>('getting-travel-vehicle', null);
-  const [confirmation, setConfirmation] = useStoredState<BookingConfirmation | null>('getting-travel-confirmation', null);
+  const [booking, setBooking] = useStoredState<BookingFormValues | null>(
+    'getting-travel-booking',
+    null,
+    'session',
+    parseStoredBooking,
+  );
+  const [selectedServiceId, setSelectedServiceId] = useStoredState<string | null>(
+    'getting-travel-service',
+    null,
+  );
+  const [selectedVehicleId, setSelectedVehicleId] = useStoredState<string | null>(
+    'getting-travel-vehicle',
+    null,
+  );
+  const [confirmation, setConfirmation] = useStoredState<BookingConfirmation | null>(
+    'getting-travel-confirmation',
+    null,
+    'local',
+    parseStoredConfirmation,
+  );
   const [user, setUser] = useStoredState<AuthUser | null>('getting-travel-user', null, 'local');
   const [authReturnPath, setAuthReturnPath] = useState('/');
 
@@ -46,7 +66,25 @@ export default function App() {
     document.title = pageTitles[pathname] ?? 'Getting Travel';
   }, [pathname]);
 
+  useEffect(() => {
+    const isPrivatePage = pathname === '/minha-reserva' || pathname === '/informacoes-pessoais';
+
+    if (isPrivatePage && !user) {
+      setAuthReturnPath(pathname);
+      navigate('/conta', { replace: true });
+    }
+  }, [navigate, pathname, user]);
+
   const handleNavigate: NavigateFunction = (to, options) => {
+    const targetPath = new URL(to, window.location.origin).pathname;
+    const isPrivatePage = targetPath === '/minha-reserva' || targetPath === '/informacoes-pessoais';
+
+    if (isPrivatePage && !user) {
+      setAuthReturnPath(targetPath);
+      navigate('/conta');
+      return;
+    }
+
     if (to.startsWith('/conta') && pathname !== '/conta') {
       setAuthReturnPath(pathname);
     }
@@ -60,7 +98,6 @@ export default function App() {
     setBooking(values);
     setSelectedServiceId(null);
     setSelectedVehicleId(firstAvailableVehicle?.id ?? null);
-    setConfirmation(null);
     navigate('/transfers');
   };
 
@@ -116,7 +153,6 @@ export default function App() {
     setBooking(null);
     setSelectedServiceId(null);
     setSelectedVehicleId(null);
-    setConfirmation(null);
     navigate('/#reserva');
   };
 
@@ -128,6 +164,7 @@ export default function App() {
       return (
         <HomePage
           user={user}
+          booking={booking}
           onBookingSubmit={handleBookingSubmit}
           onNavigate={handleNavigate}
         />
@@ -141,6 +178,26 @@ export default function App() {
           onNavigate={handleNavigate}
         />
       );
+    case '/minha-reserva':
+      return user ? (
+        <CustomerAreaPage
+          view="booking"
+          user={user}
+          confirmation={confirmation}
+          onLogout={handleLogout}
+          onNavigate={handleNavigate}
+        />
+      ) : null;
+    case '/informacoes-pessoais':
+      return user ? (
+        <CustomerAreaPage
+          view="profile"
+          user={user}
+          confirmation={confirmation}
+          onLogout={handleLogout}
+          onNavigate={handleNavigate}
+        />
+      ) : null;
     case '/transfers':
       return (
         <TransfersPage

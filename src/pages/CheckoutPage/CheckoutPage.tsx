@@ -26,19 +26,16 @@ interface CheckoutPageProps {
 }
 
 export function CheckoutPage({ user, booking, service, vehicle, onSubmit, onNavigate }: CheckoutPageProps) {
-  const {
-    values,
-    errors,
-    isSubmitting,
-    updateField,
-    handleInputChange,
-    handleNotesChange,
-    handleSubmit,
-  } = useCheckoutForm(user, onSubmit);
+  const { values, errors, isSubmitting, updateField, handleInputChange, handleNotesChange, handleSubmit } =
+    useCheckoutForm(user, onSubmit);
 
   if (!booking || !service || !vehicle) {
     return (
-      <PageShell onNavigate={onNavigate} accountLabel={user ? `Olá, ${user.name.split(' ')[0]}` : 'Entrar'}>
+      <PageShell
+        onNavigate={onNavigate}
+        accountLabel={user ? `Olá, ${user.name.split(' ')[0]}` : 'Entrar'}
+        isAuthenticated={Boolean(user)}
+      >
         <section className={styles.emptyState}>
           <div>
             <p>Checkout</p>
@@ -56,7 +53,11 @@ export function CheckoutPage({ user, booking, service, vehicle, onSubmit, onNavi
   const pricing = calculatePricing(booking, service, vehicle);
 
   return (
-    <PageShell onNavigate={onNavigate} accountLabel={user ? `Olá, ${user.name.split(' ')[0]}` : 'Entrar'}>
+    <PageShell
+      onNavigate={onNavigate}
+      accountLabel={user ? `Olá, ${user.name.split(' ')[0]}` : 'Entrar'}
+      isAuthenticated={Boolean(user)}
+    >
       <section className={styles.pageHero}>
         <div>
           <p>Checkout seguro</p>
@@ -84,7 +85,9 @@ export function CheckoutPage({ user, booking, service, vehicle, onSubmit, onNavi
               {!user ? (
                 <div className={styles.loginPrompt}>
                   <span>Já tem conta? Entre para preencher os dados mais rapidamente.</span>
-                  <button type="button" onClick={() => onNavigate('/conta')}>Entrar</button>
+                  <button type="button" onClick={() => onNavigate('/conta')}>
+                    Entrar
+                  </button>
                 </div>
               ) : null}
 
@@ -99,7 +102,11 @@ export function CheckoutPage({ user, booking, service, vehicle, onSubmit, onNavi
                     aria-invalid={Boolean(errors.fullName)}
                     aria-describedby={errors.fullName ? 'checkout-name-error' : undefined}
                   />
-                  {errors.fullName ? <small className={styles.error} id="checkout-name-error">{errors.fullName}</small> : null}
+                  {errors.fullName ? (
+                    <small className={styles.error} id="checkout-name-error">
+                      {errors.fullName}
+                    </small>
+                  ) : null}
                 </label>
 
                 <label>
@@ -112,7 +119,11 @@ export function CheckoutPage({ user, booking, service, vehicle, onSubmit, onNavi
                     aria-invalid={Boolean(errors.email)}
                     aria-describedby={errors.email ? 'checkout-email-error' : undefined}
                   />
-                  {errors.email ? <small className={styles.error} id="checkout-email-error">{errors.email}</small> : null}
+                  {errors.email ? (
+                    <small className={styles.error} id="checkout-email-error">
+                      {errors.email}
+                    </small>
+                  ) : null}
                 </label>
 
                 <label>
@@ -125,11 +136,17 @@ export function CheckoutPage({ user, booking, service, vehicle, onSubmit, onNavi
                     aria-invalid={Boolean(errors.phone)}
                     aria-describedby={errors.phone ? 'checkout-phone-error' : undefined}
                   />
-                  {errors.phone ? <small className={styles.error} id="checkout-phone-error">{errors.phone}</small> : null}
+                  {errors.phone ? (
+                    <small className={styles.error} id="checkout-phone-error">
+                      {errors.phone}
+                    </small>
+                  ) : null}
                 </label>
 
                 <label className={styles.fullWidth}>
-                  <span>Número do voo <small>(opcional)</small></span>
+                  <span>
+                    Número do voo <small>(opcional)</small>
+                  </span>
                   <input
                     type="text"
                     value={values.flightNumber}
@@ -140,7 +157,9 @@ export function CheckoutPage({ user, booking, service, vehicle, onSubmit, onNavi
                 </label>
 
                 <label className={styles.fullWidth}>
-                  <span>Observações <small>(opcional)</small></span>
+                  <span>
+                    Observações <small>(opcional)</small>
+                  </span>
                   <textarea
                     value={values.notes}
                     onChange={handleNotesChange}
@@ -170,7 +189,10 @@ export function CheckoutPage({ user, booking, service, vehicle, onSubmit, onNavi
                     onChange={() => updateField('paymentMethod', 'card-on-arrival')}
                   />
                   <CardIcon />
-                  <span><strong>Cartão no veículo</strong><small>Pagamento diretamente ao motorista.</small></span>
+                  <span>
+                    <strong>Cartão no veículo</strong>
+                    <small>Pagamento diretamente ao motorista.</small>
+                  </span>
                 </label>
                 <label className={values.paymentMethod === 'cash' ? styles.selectedPayment : ''}>
                   <input
@@ -180,8 +202,13 @@ export function CheckoutPage({ user, booking, service, vehicle, onSubmit, onNavi
                     checked={values.paymentMethod === 'cash'}
                     onChange={() => updateField('paymentMethod', 'cash')}
                   />
-                  <span className={styles.euroIcon} aria-hidden="true">€</span>
-                  <span><strong>Dinheiro</strong><small>Pagamento em numerário no final da viagem.</small></span>
+                  <span className={styles.euroIcon} aria-hidden="true">
+                    €
+                  </span>
+                  <span>
+                    <strong>Dinheiro</strong>
+                    <small>Pagamento em numerário no final da viagem.</small>
+                  </span>
                 </label>
               </div>
 
@@ -189,18 +216,27 @@ export function CheckoutPage({ user, booking, service, vehicle, onSubmit, onNavi
                 <input
                   type="checkbox"
                   checked={values.acceptTerms}
-                  onChange={(event: ChangeEvent<HTMLInputElement>) => updateField('acceptTerms', event.target.checked)}
+                  onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                    updateField('acceptTerms', event.target.checked)
+                  }
                   aria-invalid={Boolean(errors.acceptTerms)}
                   aria-describedby={errors.acceptTerms ? 'checkout-terms-error' : undefined}
                 />
                 <span>Confirmo que os dados estão corretos e aceito os termos e condições da reserva.</span>
-                {errors.acceptTerms ? <small className={styles.error} id="checkout-terms-error">{errors.acceptTerms}</small> : null}
+                {errors.acceptTerms ? (
+                  <small className={styles.error} id="checkout-terms-error">
+                    {errors.acceptTerms}
+                  </small>
+                ) : null}
               </label>
 
               <button className={styles.submitButton} type="submit" disabled={isSubmitting}>
-                <LockIcon /> {isSubmitting ? 'A confirmar…' : `Confirmar reserva — ${formatCurrency(pricing.total)}`}
+                <LockIcon />{' '}
+                {isSubmitting ? 'A confirmar…' : `Confirmar reserva — ${formatCurrency(pricing.total)}`}
               </button>
-              <p className={styles.demoNote}>Checkout demonstrativo: nenhum dado de pagamento é recolhido ou processado.</p>
+              <p className={styles.demoNote}>
+                Checkout demonstrativo: nenhum dado de pagamento é recolhido ou processado.
+              </p>
             </section>
           </form>
 

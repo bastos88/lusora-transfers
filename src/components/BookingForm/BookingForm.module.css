@@ -1,6 +1,6 @@
 .form {
   padding-top: 25px;
-  overflow: hidden;
+  overflow: visible;
   border: 1px solid var(--color-border-on-dark);
   border-radius: var(--radius-md);
   background: rgba(17, 27, 45, 0.96);
@@ -139,7 +139,9 @@
   background: var(--color-accent);
   font-weight: 900;
   cursor: pointer;
-  transition: background var(--transition-fast), transform var(--transition-fast);
+  transition:
+    background var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .submitButton:hover {

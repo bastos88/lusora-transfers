@@ -6,8 +6,26 @@ import type { BookingFormValues } from '../../types/travel';
 
 const booking: BookingFormValues = {
   tripType: 'one-way',
-  origin: 'Aeroporto do Porto',
-  destination: 'Braga',
+  origin: {
+    id: 'porto-airport',
+    label: 'Aeroporto do Porto, Maia, Portugal',
+    name: 'Aeroporto do Porto',
+    city: 'Maia',
+    country: 'Portugal',
+    countryCode: 'PT',
+    latitude: 41.2421,
+    longitude: -8.6786,
+  },
+  destination: {
+    id: 'braga',
+    label: 'Braga, Portugal',
+    name: 'Braga',
+    city: 'Braga',
+    country: 'Portugal',
+    countryCode: 'PT',
+    latitude: 41.5518,
+    longitude: -8.4229,
+  },
   departureDate: '2027-08-10',
   departureTime: '10:00',
   returnDate: '',
@@ -37,6 +55,9 @@ describe('TransfersPage', () => {
 
     expect(handleServiceSelect).toHaveBeenCalledWith('meet-and-greet');
     expect(screen.getByRole('button', { name: /Standard/ })).toBeDisabled();
-    expect(screen.getByRole('button', { name: /^Minivan disponível/ })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: /^Minivan disponível/ })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
   });
 });

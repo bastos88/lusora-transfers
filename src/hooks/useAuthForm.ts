@@ -65,8 +65,7 @@ export function useAuthForm(mode: AuthMode, onAuthenticated: (user: AuthUser) =>
   };
 
   const handleInputChange =
-    (field: Exclude<AuthField, 'acceptTerms'>) =>
-    (event: ChangeEvent<HTMLInputElement>) =>
+    (field: Exclude<AuthField, 'acceptTerms'>) => (event: ChangeEvent<HTMLInputElement>) =>
       updateField(field, event.target.value);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -82,6 +81,7 @@ export function useAuthForm(mode: AuthMode, onAuthenticated: (user: AuthUser) =>
     onAuthenticated({
       name: mode === 'register' ? values.name.trim() : fallbackName,
       email: values.email.trim(),
+      phone: mode === 'register' ? values.phone.trim() : undefined,
     });
   };
 

@@ -1,31 +1,19 @@
 import type { ChangeEvent } from 'react';
-import {
-  CalendarIcon,
-  ChevronDownIcon,
-  ClockIcon,
-  LocationIcon,
-  UsersIcon,
-} from '../Icons/Icons';
+import { CalendarIcon, ChevronDownIcon, ClockIcon, UsersIcon } from '../Icons/Icons';
 import { useBookingForm } from '../../hooks/useBookingForm';
 import type { BookingFormValues } from '../../types/travel';
 import { timeOptions } from '../../utils/date';
+import { LocationAutocomplete } from '../LocationAutocomplete/LocationAutocomplete';
 import styles from './BookingForm.module.css';
 
 interface BookingFormProps {
   onSubmit: (values: BookingFormValues) => void;
+  initialValues?: BookingFormValues | null;
 }
 
-export function BookingForm({ onSubmit }: BookingFormProps) {
-  const {
-    values,
-    errors,
-    minimumDate,
-    updateField,
-    handleTextChange,
-    handleDateChange,
-    handleTimeChange,
-    handleSubmit,
-  } = useBookingForm(onSubmit);
+export function BookingForm({ onSubmit, initialValues = null }: BookingFormProps) {
+  const { values, errors, minimumDate, updateField, handleDateChange, handleTimeChange, handleSubmit } =
+    useBookingForm(onSubmit, initialValues);
 
   return (
     <form className={styles.form} id="reserva" onSubmit={handleSubmit} noValidate>
@@ -53,52 +41,30 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
         </label>
       </fieldset>
 
-      <div className={styles.fieldGroup}>
-        <label className={styles.field} htmlFor="booking-origin">
-          <span className={styles.fieldIcon}><LocationIcon /></span>
-          <span className={styles.fieldContent}>
-            <span className={styles.fieldLabel}>Origem</span>
-            <input
-              id="booking-origin"
-              name="origin"
-              value={values.origin}
-              onChange={handleTextChange('origin')}
-              placeholder="Insira a localização de recolha"
-              autoComplete="street-address"
-              aria-invalid={Boolean(errors.origin)}
-              aria-describedby={errors.origin ? 'booking-origin-error' : undefined}
-            />
-          </span>
-        </label>
-        {errors.origin ? <p className={styles.error} id="booking-origin-error">{errors.origin}</p> : null}
-      </div>
+      <LocationAutocomplete
+        id="booking-origin"
+        label="Origem"
+        placeholder="Insira a localização de recolha"
+        value={values.origin}
+        error={errors.origin}
+        onChange={(location) => updateField('origin', location)}
+      />
 
-      <div className={styles.fieldGroup}>
-        <label className={styles.field} htmlFor="booking-destination">
-          <span className={styles.fieldIcon}><LocationIcon /></span>
-          <span className={styles.fieldContent}>
-            <span className={styles.fieldLabel}>Destino</span>
-            <input
-              id="booking-destination"
-              name="destination"
-              value={values.destination}
-              onChange={handleTextChange('destination')}
-              placeholder="Insira o destino"
-              autoComplete="off"
-              aria-invalid={Boolean(errors.destination)}
-              aria-describedby={errors.destination ? 'booking-destination-error' : undefined}
-            />
-          </span>
-        </label>
-        {errors.destination ? (
-          <p className={styles.error} id="booking-destination-error">{errors.destination}</p>
-        ) : null}
-      </div>
+      <LocationAutocomplete
+        id="booking-destination"
+        label="Destino"
+        placeholder="Insira o destino"
+        value={values.destination}
+        error={errors.destination}
+        onChange={(location) => updateField('destination', location)}
+      />
 
       <div className={styles.row}>
         <div className={styles.fieldGroup}>
           <label className={styles.field} htmlFor="booking-departure-date">
-            <span className={styles.fieldIcon}><CalendarIcon /></span>
+            <span className={styles.fieldIcon}>
+              <CalendarIcon />
+            </span>
             <span className={styles.fieldContent}>
               <span className={styles.fieldLabel}>Partida</span>
               <input
@@ -114,12 +80,16 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
             </span>
           </label>
           {errors.departureDate ? (
-            <p className={styles.error} id="booking-departure-error">{errors.departureDate}</p>
+            <p className={styles.error} id="booking-departure-error">
+              {errors.departureDate}
+            </p>
           ) : null}
         </div>
 
         <label className={`${styles.field} ${styles.selectField}`} htmlFor="booking-departure-time">
-          <span className={styles.fieldIcon}><ClockIcon /></span>
+          <span className={styles.fieldIcon}>
+            <ClockIcon />
+          </span>
           <span className={styles.fieldContent}>
             <span className={styles.fieldLabel}>Hora</span>
             <select
@@ -128,7 +98,11 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
               value={values.departureTime}
               onChange={handleTimeChange('departureTime')}
             >
-              {timeOptions.map((time) => <option key={time} value={time}>{time}</option>)}
+              {timeOptions.map((time) => (
+                <option key={time} value={time}>
+                  {time}
+                </option>
+              ))}
             </select>
           </span>
           <ChevronDownIcon />
@@ -139,7 +113,9 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
         <div className={styles.row}>
           <div className={styles.fieldGroup}>
             <label className={styles.field} htmlFor="booking-return-date">
-              <span className={styles.fieldIcon}><CalendarIcon /></span>
+              <span className={styles.fieldIcon}>
+                <CalendarIcon />
+              </span>
               <span className={styles.fieldContent}>
                 <span className={styles.fieldLabel}>Volta</span>
                 <input
@@ -155,12 +131,16 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
               </span>
             </label>
             {errors.returnDate ? (
-              <p className={styles.error} id="booking-return-error">{errors.returnDate}</p>
+              <p className={styles.error} id="booking-return-error">
+                {errors.returnDate}
+              </p>
             ) : null}
           </div>
 
           <label className={`${styles.field} ${styles.selectField}`} htmlFor="booking-return-time">
-            <span className={styles.fieldIcon}><ClockIcon /></span>
+            <span className={styles.fieldIcon}>
+              <ClockIcon />
+            </span>
             <span className={styles.fieldContent}>
               <span className={styles.fieldLabel}>Hora</span>
               <select
@@ -169,7 +149,11 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
                 value={values.returnTime}
                 onChange={handleTimeChange('returnTime')}
               >
-                {timeOptions.map((time) => <option key={time} value={time}>{time}</option>)}
+                {timeOptions.map((time) => (
+                  <option key={time} value={time}>
+                    {time}
+                  </option>
+                ))}
               </select>
             </span>
             <ChevronDownIcon />
@@ -179,7 +163,9 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
 
       <div className={styles.fieldGroup}>
         <label className={`${styles.field} ${styles.selectField}`} htmlFor="booking-passengers">
-          <span className={styles.fieldIcon}><UsersIcon /></span>
+          <span className={styles.fieldIcon}>
+            <UsersIcon />
+          </span>
           <span className={styles.fieldContent}>
             <span className={styles.fieldLabel}>Passageiros</span>
             <select
@@ -202,11 +188,15 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
           <ChevronDownIcon />
         </label>
         {errors.passengers ? (
-          <p className={styles.error} id="booking-passengers-error">{errors.passengers}</p>
+          <p className={styles.error} id="booking-passengers-error">
+            {errors.passengers}
+          </p>
         ) : null}
       </div>
 
-      <button className={styles.submitButton} type="submit">Pesquisar transfer</button>
+      <button className={styles.submitButton} type="submit">
+        Pesquisar transfer
+      </button>
     </form>
   );
 }

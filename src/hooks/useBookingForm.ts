@@ -5,8 +5,8 @@ import { addDaysFromToday, buildDateTime, formatDateForInput } from '../utils/da
 
 const initialValues: BookingFormValues = {
   tripType: 'round-trip',
-  origin: 'Aeroporto Francisco Sá Carneiro',
-  destination: '',
+  origin: null,
+  destination: null,
   departureDate: addDaysFromToday(1),
   departureTime: '10:00',
   returnDate: addDaysFromToday(4),
@@ -14,20 +14,23 @@ const initialValues: BookingFormValues = {
   passengers: 2,
 };
 
-function validateBooking(values: BookingFormValues): BookingFormErrors {
+export function validateBooking(values: BookingFormValues): BookingFormErrors {
   const errors: BookingFormErrors = {};
-  const normalizedOrigin = values.origin.trim().toLocaleLowerCase('pt-PT');
-  const normalizedDestination = values.destination.trim().toLocaleLowerCase('pt-PT');
   const departure = buildDateTime(values.departureDate, values.departureTime);
   const returnTrip = buildDateTime(values.returnDate, values.returnTime);
 
-  if (!values.origin.trim()) {
+  if (!values.origin) {
     errors.origin = 'Indique a localização de recolha.';
   }
 
-  if (!values.destination.trim()) {
+  if (!values.destination) {
     errors.destination = 'Indique o destino da viagem.';
-  } else if (normalizedOrigin && normalizedOrigin === normalizedDestination) {
+  } else if (
+    values.origin &&
+    (values.origin.id === values.destination.id ||
+      (values.origin.latitude === values.destination.latitude &&
+        values.origin.longitude === values.destination.longitude))
+  ) {
     errors.destination = 'O destino deve ser diferente da origem.';
   }
 
@@ -52,8 +55,11 @@ function validateBooking(values: BookingFormValues): BookingFormErrors {
   return errors;
 }
 
-export function useBookingForm(onValidSubmit: (values: BookingFormValues) => void) {
-  const [values, setValues] = useState<BookingFormValues>(initialValues);
+export function useBookingForm(
+  onValidSubmit: (values: BookingFormValues) => void,
+  savedValues: BookingFormValues | null = null,
+) {
+  const [values, setValues] = useState<BookingFormValues>(savedValues ?? initialValues);
   const [errors, setErrors] = useState<BookingFormErrors>({});
 
   const updateField = <K extends keyof BookingFormValues>(field: K, value: BookingFormValues[K]) => {
@@ -61,14 +67,13 @@ export function useBookingForm(onValidSubmit: (values: BookingFormValues) => voi
     setErrors((current) => ({ ...current, [field]: undefined }));
   };
 
-  const handleTextChange = (field: 'origin' | 'destination') =>
-    (event: ChangeEvent<HTMLInputElement>) => updateField(field, event.target.value);
+  const handleDateChange =
+    (field: 'departureDate' | 'returnDate') => (event: ChangeEvent<HTMLInputElement>) =>
+      updateField(field, event.target.value);
 
-  const handleDateChange = (field: 'departureDate' | 'returnDate') =>
-    (event: ChangeEvent<HTMLInputElement>) => updateField(field, event.target.value);
-
-  const handleTimeChange = (field: 'departureTime' | 'returnTime') =>
-    (event: ChangeEvent<HTMLSelectElement>) => updateField(field, event.target.value);
+  const handleTimeChange =
+    (field: 'departureTime' | 'returnTime') => (event: ChangeEvent<HTMLSelectElement>) =>
+      updateField(field, event.target.value);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -85,7 +90,6 @@ export function useBookingForm(onValidSubmit: (values: BookingFormValues) => voi
     errors,
     minimumDate: formatDateForInput(new Date()),
     updateField,
-    handleTextChange,
     handleDateChange,
     handleTimeChange,
     handleSubmit,

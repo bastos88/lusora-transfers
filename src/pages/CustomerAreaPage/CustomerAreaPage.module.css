@@ -1,0 +1,394 @@
+.pageHero {
+  color: var(--color-white);
+  background:
+    radial-gradient(circle at 82% 20%, rgba(255, 157, 0, 0.2), transparent 24rem),
+    linear-gradient(135deg, var(--color-navy), var(--color-navy-soft));
+}
+
+.pageHero > div {
+  width: min(var(--content-width), calc(100% - 2rem));
+  margin-inline: auto;
+  padding: clamp(2.5rem, 6vw, 4.5rem) 0;
+}
+
+.pageHero p,
+.sectionHeader p,
+.detailCard > p,
+.profileCard p {
+  margin: 0 0 0.5rem;
+  color: var(--color-accent);
+  font-size: 0.6875rem;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.pageHero h1 {
+  margin: 0;
+  font-size: clamp(2.25rem, 5vw, 4rem);
+  letter-spacing: -0.04em;
+}
+
+.pageHero span {
+  display: block;
+  margin-top: 0.85rem;
+  color: var(--color-text-on-dark-muted);
+  line-height: 1.6;
+}
+
+.layout {
+  width: min(var(--content-width), calc(100% - 2rem));
+  min-height: 38rem;
+  margin-inline: auto;
+  padding: clamp(2rem, 5vw, 4rem) 0 clamp(4rem, 8vw, 7rem);
+  display: grid;
+  grid-template-columns: 16rem minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(2rem, 5vw, 4rem);
+}
+
+.sidebar {
+  padding: 0.65rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-white);
+  box-shadow: var(--shadow-sm);
+}
+
+.sidebar nav {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.sidebar nav button {
+  width: 100%;
+  min-height: 4.25rem;
+  padding: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sidebar nav button:hover,
+.sidebar nav .activeNavItem {
+  color: var(--color-navy);
+  background: var(--color-surface);
+}
+
+.sidebar nav .activeNavItem {
+  box-shadow: inset 0.2rem 0 var(--color-accent);
+}
+
+.sidebar nav svg {
+  flex: 0 0 auto;
+  color: var(--color-accent-deep);
+}
+
+.sidebar nav span {
+  min-width: 0;
+}
+
+.sidebar nav strong,
+.sidebar nav small {
+  display: block;
+}
+
+.sidebar nav strong {
+  font-size: 0.8125rem;
+}
+
+.sidebar nav small {
+  margin-top: 0.2rem;
+  color: var(--color-text-secondary);
+  font-size: 0.6875rem;
+}
+
+.logoutButton {
+  width: 100%;
+  margin-top: 0.65rem;
+  padding: 0.8rem;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  background: transparent;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-align: left;
+  cursor: pointer;
+}
+
+.logoutButton:hover {
+  color: #a9342b;
+}
+
+.content {
+  min-width: 0;
+}
+
+.sectionHeader {
+  min-height: 4rem;
+  margin-bottom: var(--space-xl);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-lg);
+}
+
+.sectionHeader h2 {
+  margin: 0;
+  color: var(--color-navy);
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: -0.04em;
+}
+
+.status {
+  min-height: 2.25rem;
+  padding: 0 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  color: #1f6b47;
+  background: #e9f7ef;
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
+.status svg {
+  width: 1rem;
+}
+
+.bookingContent {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.referenceCard {
+  padding: 1.2rem 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.25rem var(--space-lg);
+  border-radius: var(--radius-md);
+  color: var(--color-white);
+  background: var(--color-navy);
+}
+
+.referenceCard span,
+.referenceCard small {
+  color: var(--color-text-on-dark-muted);
+  font-size: 0.6875rem;
+}
+
+.referenceCard strong {
+  grid-row: span 2;
+  color: var(--color-accent);
+  font-size: clamp(1.1rem, 3vw, 1.5rem);
+  letter-spacing: 0.04em;
+}
+
+.detailsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-lg);
+}
+
+.detailCard,
+.profileCard,
+.emptyState {
+  padding: clamp(1.5rem, 4vw, 2rem);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-white);
+  box-shadow: var(--shadow-sm);
+}
+
+.detailCard h3,
+.profileCard h3,
+.emptyState h3 {
+  margin: 0;
+  color: var(--color-navy);
+  font-size: 1.25rem;
+}
+
+.detailCard dl,
+.profileCard dl {
+  margin: var(--space-lg) 0 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.detailCard dl div,
+.profileCard dl div {
+  padding-bottom: 0.85rem;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.detailCard dl div:last-child,
+.profileCard dl div:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.detailCard dt,
+.profileCard dt {
+  color: var(--color-text-secondary);
+  font-size: 0.75rem;
+}
+
+.detailCard dd,
+.profileCard dd {
+  margin: 0;
+  color: var(--color-navy);
+  font-size: 0.8125rem;
+  font-weight: 800;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.detailCard .total {
+  color: var(--color-accent-deep);
+  font-size: 1rem;
+}
+
+.primaryButton {
+  min-height: 3.25rem;
+  padding: 0 var(--space-lg);
+  justify-self: start;
+  border-radius: var(--radius-sm);
+  color: var(--color-navy);
+  background: var(--color-accent);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.primaryButton:hover {
+  background: var(--color-accent-light);
+}
+
+.emptyState {
+  min-height: 22rem;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  text-align: center;
+}
+
+.emptyIcon,
+.avatar {
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: var(--space-lg);
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--color-navy);
+  background: var(--color-accent);
+}
+
+.emptyState p {
+  max-width: 30rem;
+  margin: 0.75rem 0 var(--space-xl);
+  color: var(--color-text-secondary);
+  line-height: 1.65;
+}
+
+.emptyState .primaryButton {
+  justify-self: center;
+}
+
+.profileCard {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0 var(--space-lg);
+}
+
+.avatar {
+  margin: 0;
+  color: var(--color-white);
+  background: var(--color-navy);
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+.profileCard dl {
+  grid-column: 1 / -1;
+  margin-top: var(--space-xl);
+}
+
+.profileNote {
+  margin: var(--space-md) 0 0;
+  color: var(--color-text-secondary);
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 50rem) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .logoutButton {
+    text-align: center;
+  }
+}
+
+@media (max-width: 38rem) {
+  .detailsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .referenceCard {
+    grid-template-columns: 1fr;
+  }
+
+  .referenceCard strong {
+    grid-row: auto;
+  }
+}
+
+@media (max-width: 31rem) {
+  .layout,
+  .pageHero > div {
+    width: min(100% - 1.25rem, var(--content-width));
+  }
+
+  .sidebar nav {
+    grid-template-columns: 1fr;
+  }
+
+  .sectionHeader {
+    flex-direction: column;
+  }
+
+  .profileCard {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .avatar {
+    margin: 0 auto var(--space-md);
+  }
+
+  .detailCard dl div,
+  .profileCard dl div {
+    display: grid;
+  }
+
+  .detailCard dd,
+  .profileCard dd {
+    text-align: left;
+  }
+}

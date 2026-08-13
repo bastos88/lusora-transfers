@@ -1,18 +1,25 @@
 export type TripType = 'one-way' | 'round-trip';
 
+export interface LocationOption {
+  id: string;
+  label: string;
+  name: string;
+  city?: string;
+  postcode?: string;
+  country: string;
+  countryCode: string;
+  latitude: number;
+  longitude: number;
+  resultType?: string;
+}
+
 export type BookingField =
-  | 'origin'
-  | 'destination'
-  | 'departureDate'
-  | 'departureTime'
-  | 'returnDate'
-  | 'returnTime'
-  | 'passengers';
+  'origin' | 'destination' | 'departureDate' | 'departureTime' | 'returnDate' | 'returnTime' | 'passengers';
 
 export interface BookingFormValues {
   tripType: TripType;
-  origin: string;
-  destination: string;
+  origin: LocationOption | null;
+  destination: LocationOption | null;
   departureDate: string;
   departureTime: string;
   returnDate: string;
@@ -85,6 +92,7 @@ export interface FaqItem {
 export interface AuthUser {
   name: string;
   email: string;
+  phone?: string;
 }
 
 export type AuthMode = 'login' | 'register';
