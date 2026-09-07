@@ -8,7 +8,7 @@ export function Features() {
     <section className={styles.section} id="vantagens" aria-labelledby="features-title">
       <div className={styles.inner}>
         <SectionHeading
-          eyebrow="Por que escolher a Getting Travel?"
+          eyebrow="Por que escolher a Lusóra Tranfers?"
           title="O seu transfer, pensado do início ao fim"
           description="Uma experiência simples, confortável e preparada para a sua chegada ao Porto."
           headingId="features-title"

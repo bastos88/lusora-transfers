@@ -56,6 +56,7 @@ export interface Testimonial {
   text: string;
   initials: string;
   avatarBackground: string;
+  avatar: string;
 }
 
 export interface Vehicle {

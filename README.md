@@ -1,4 +1,4 @@
-# Getting Travel — Reserva de transfers
+# Lusóra Tranfers — Reserva de transfers
 
 Aplicação frontend responsiva para pesquisa e reserva demonstrativa de transfers privados em Portugal, com preferência de resultados para a região do Porto.
 

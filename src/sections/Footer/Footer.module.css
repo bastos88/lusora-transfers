@@ -12,14 +12,23 @@
   gap: clamp(2rem, 5vw, 4rem);
 }
 
+.brandColumn > a {
+  display: inline-flex;
+  align-items: flex-start;
+  vertical-align: top;
+  line-height: 0;
+}
+
 .brandColumn img {
-  width: min(13.5rem, 100%);
+  display: block;
+  width: 80px;
   height: auto;
+  object-fit: contain;
 }
 
 .brandColumn p {
   max-width: 20rem;
-  margin: var(--space-lg) 0 0;
+  margin: var(--space-lg) 8px 0;
   font-size: 0.8125rem;
   line-height: 1.75;
 }

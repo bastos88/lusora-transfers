@@ -11,6 +11,10 @@ export function TestimonialCarousel() {
     disabled: prefersReducedMotion,
   });
   const activeTestimonial = testimonials[activeIndex] ?? testimonials[0];
+  const visibleTestimonials = [-2, -1, 0, 1, 2].map((offset) => {
+    const index = (activeIndex + offset + testimonials.length) % testimonials.length;
+    return { testimonial: testimonials[index], index };
+  });
 
   const handlePrevious = () => moveBy(-1);
   const handleNext = () => moveBy(1);
@@ -23,7 +27,7 @@ export function TestimonialCarousel() {
         </button>
 
         <div className={styles.avatarRow} role="tablist" aria-label="Escolher avaliação">
-          {testimonials.map((testimonial, index) => {
+          {visibleTestimonials.map(({ testimonial, index }) => {
             const isActive = index === activeIndex;
 
             return (
@@ -35,10 +39,20 @@ export function TestimonialCarousel() {
                 role="tab"
                 aria-selected={isActive}
                 aria-controls="active-testimonial"
+                aria-label={`Ler avaliação de ${testimonial.name}`}
                 onClick={() => setActiveIndex(index)}
                 title={`Ler avaliação de ${testimonial.name}`}
               >
                 {testimonial.initials}
+                <img
+                  src={testimonial.avatar}
+                  alt=""
+                  width="1024"
+                  height="1024"
+                  loading="lazy"
+                  decoding="async"
+                  onError={(event) => { event.currentTarget.style.display = 'none'; }}
+                />
               </button>
             );
           })}
@@ -50,6 +64,7 @@ export function TestimonialCarousel() {
       </div>
 
       <article
+        key={activeTestimonial.id}
         className={styles.review}
         id="active-testimonial"
         role="tabpanel"

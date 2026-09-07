@@ -1,5 +1,5 @@
 import type { MouseEvent } from 'react';
-import logo from '../../assets/images/getting-travel-logo.png';
+import logo from '../../assets/images/luso-logo.png';
 import { navigationItems } from '../../data/navigation';
 import { useMobileMenu } from '../../hooks/useMobileMenu';
 import type { NavigateFunction } from '../../types/travel';
@@ -38,10 +38,10 @@ export function Header({
         <a
           className={styles.brand}
           href="/"
-          aria-label="Getting Travel — página inicial"
+          aria-label="Lusóra Tranfers — página inicial"
           onClick={(event: MouseEvent<HTMLAnchorElement>) => handleInternalNavigation(event, '/')}
         >
-          <img src={logo} alt="Getting Travel" width="1100" height="330" />
+          <img src={logo} alt="Lusóra Tranfers" width="1774" height="887" />
         </a>
 
         <button

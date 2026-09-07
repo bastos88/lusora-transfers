@@ -1,5 +1,5 @@
 import type { MouseEvent } from 'react';
-import logo from '../../assets/images/getting-travel-logo.png';
+import logo from '../../assets/images/luso-logo.png';
 import { navigationItems } from '../../data/navigation';
 import type { NavigateFunction } from '../../types/travel';
 import styles from './Footer.module.css';
@@ -25,10 +25,10 @@ export function Footer({ onNavigate, isAuthenticated = false }: FooterProps) {
         <div className={styles.brandColumn}>
           <a
             href="/"
-            aria-label="Getting Travel — voltar ao início"
+            aria-label="Lusóra Tranfers — voltar ao início"
             onClick={(event: MouseEvent<HTMLAnchorElement>) => handleNavigation(event, '/')}
           >
-            <img src={logo} alt="Getting Travel" width="1100" height="330" loading="lazy" />
+            <img src={logo} alt="Lusóra Tranfers" width="1774" height="887" loading="lazy" />
           </a>
           <p>Transfers privados no Porto com conforto, pontualidade e uma experiência de reserva simples.</p>
         </div>
@@ -73,7 +73,7 @@ export function Footer({ onNavigate, isAuthenticated = false }: FooterProps) {
       </div>
 
       <div className={styles.bottom}>
-        <span>© {new Date().getFullYear()} Getting Travel. Todos os direitos reservados.</span>
+        <span>© {new Date().getFullYear()} Lusóra Tranfers. Todos os direitos reservados.</span>
         <span>Aplicação demonstrativa em React e TypeScript.</span>
       </div>
     </footer>

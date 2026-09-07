@@ -21,12 +21,16 @@
 .brand {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  line-height: 0;
   flex: 0 0 auto;
 }
 
 .brand img {
-  width: clamp(9.5rem, 15vw, 12rem);
+  width: 100px;
   height: auto;
+  object-fit: contain;
 }
 
 .navigation {
@@ -40,6 +44,9 @@
 
 .navigation > a:not(.accountLink) {
   position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
   padding-block: 0.5rem;
 }
 

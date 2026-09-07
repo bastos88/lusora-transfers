@@ -21,13 +21,13 @@ import { calculatePricing } from './utils/pricing';
 import { parseStoredBooking, parseStoredConfirmation } from './utils/bookingStorage';
 
 const pageTitles: Record<string, string> = {
-  '/': 'Getting Travel | Transfer privado no Porto',
-  '/conta': 'Área do cliente | Getting Travel',
-  '/minha-reserva': 'Minha reserva | Getting Travel',
-  '/informacoes-pessoais': 'Informações pessoais | Getting Travel',
-  '/transfers': 'Escolher transfer e veículo | Getting Travel',
-  '/checkout': 'Checkout | Getting Travel',
-  '/confirmacao': 'Reserva confirmada | Getting Travel',
+  '/': 'Lusóra Tranfers | Transfer privado no Porto',
+  '/conta': 'Área do cliente | Lusóra Tranfers',
+  '/minha-reserva': 'Minha reserva | Lusóra Tranfers',
+  '/informacoes-pessoais': 'Informações pessoais | Lusóra Tranfers',
+  '/transfers': 'Escolher transfer e veículo | Lusóra Tranfers',
+  '/checkout': 'Checkout | Lusóra Tranfers',
+  '/confirmacao': 'Reserva confirmada | Lusóra Tranfers',
 };
 
 function createReference(): string {
@@ -63,7 +63,7 @@ export default function App() {
   const [authReturnPath, setAuthReturnPath] = useState('/');
 
   useEffect(() => {
-    document.title = pageTitles[pathname] ?? 'Getting Travel';
+    document.title = pageTitles[pathname] ?? 'Lusóra Tranfers';
   }, [pathname]);
 
   useEffect(() => {
