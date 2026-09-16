@@ -1,4 +1,4 @@
-import type { BookingConfirmation, BookingFormValues, LocationOption } from '../types/travel';
+import type { BookingFormValues, LocationOption } from '../types/travel';
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object';
@@ -39,20 +39,3 @@ export function parseStoredBooking(value: unknown): BookingFormValues | null {
   return value as unknown as BookingFormValues;
 }
 
-export function parseStoredConfirmation(value: unknown): BookingConfirmation | null {
-  if (!isRecord(value) || !parseStoredBooking(value.booking) || !isRecord(value.customer)) {
-    return null;
-  }
-
-  if (
-    typeof value.reference !== 'string' ||
-    typeof value.serviceId !== 'string' ||
-    typeof value.vehicleId !== 'string' ||
-    typeof value.total !== 'number' ||
-    typeof value.createdAt !== 'string'
-  ) {
-    return null;
-  }
-
-  return value as unknown as BookingConfirmation;
-}

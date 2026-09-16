@@ -1,6 +1,5 @@
 import type { LocationOption } from '../types/travel';
 
-const GEOAPIFY_ENDPOINT = 'https://api.geoapify.com/v1/geocode/autocomplete';
 
 type LocationApiErrorKind = 'configuration' | 'network' | 'invalid-response' | 'rate-limit' | 'http';
 
@@ -93,32 +92,9 @@ export function normalizeGeoapifyResults(payload: unknown): LocationOption[] {
   return locations;
 }
 
-function getApiKey(): string {
-  const apiKey = import.meta.env.VITE_GEOAPIFY_API_KEY?.trim();
-
-  if (!apiKey) {
-    const message = import.meta.env.DEV
-      ? 'Configure VITE_GEOAPIFY_API_KEY no ficheiro .env.local para pesquisar localidades.'
-      : 'A pesquisa de localidades está temporariamente indisponível.';
-    throw new LocationApiError('configuration', message);
-  }
-
-  return apiKey;
-}
-
 export async function searchLocations(query: string, signal?: AbortSignal): Promise<LocationOption[]> {
   const normalizedQuery = normalizeLocationQuery(query);
-  const apiKey = getApiKey();
-  const url = new URL(GEOAPIFY_ENDPOINT);
-  url.search = new URLSearchParams({
-    text: normalizedQuery,
-    format: 'json',
-    lang: 'pt',
-    limit: '6',
-    filter: 'countrycode:pt',
-    bias: 'proximity:-8.6291,41.1579',
-    apiKey,
-  }).toString();
+  const url = '/api/locations?q=' + encodeURIComponent(normalizedQuery);
 
   let response: Response;
   try {

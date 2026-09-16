@@ -194,6 +194,13 @@ export function BookingForm({ onSubmit, initialValues = null }: BookingFormProps
         ) : null}
       </div>
 
+      <label className={styles.field} htmlFor="booking-luggage">
+        <span className={styles.fieldContent}><span className={styles.fieldLabel}>Malas</span>
+        <select id="booking-luggage" value={values.luggage ?? 0} onChange={(event) => updateField('luggage', Number(event.target.value))}>
+          {Array.from({length:8},(_,i)=><option key={i} value={i}>{i} {i===1?'mala':'malas'}</option>)}
+        </select></span>
+      </label>
+      <p>Horários de Portugal continental.</p>
       <button className={styles.submitButton} type="submit">
         Pesquisar transfer
       </button>

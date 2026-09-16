@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import heroImage from '../../assets/images/porto-hero.webp';
+const heroImage = '/assets/images/porto-hero.webp';
 import type { AuthUser, BookingFormValues, NavigateFunction } from '../../types/travel';
 import { BookingForm } from '../../components/BookingForm/BookingForm';
 import { Header } from '../../components/Header/Header';

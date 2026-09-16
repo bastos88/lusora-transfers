@@ -1,6 +1,6 @@
+import { useCatalog } from '../../features/AppProvider';
 import { SectionHeading } from '../../components/SectionHeading/SectionHeading';
 import { VehicleCard } from '../../components/VehicleCard/VehicleCard';
-import { vehicles } from '../../data/vehicles';
 import type { Vehicle } from '../../types/travel';
 import styles from './Fleet.module.css';
 
@@ -10,8 +10,10 @@ interface FleetProps {
 }
 
 export function Fleet({ selectedVehicleId, onVehicleSelect }: FleetProps) {
+  const { vehicles } = useCatalog();
   const selectedVehicle: Vehicle = vehicles.find((vehicle) => vehicle.id === selectedVehicleId) ?? vehicles[0];
 
+  if (!selectedVehicle) return null;
   return (
     <section className={styles.section} id="viaturas" aria-labelledby="fleet-title">
       <div className={styles.inner}>

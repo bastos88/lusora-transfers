@@ -1,4 +1,4 @@
-import checkIcon from '../../assets/icons/check.png';
+const checkIcon = '/assets/icons/check.png';
 import { trustItems } from '../../data/trustItems';
 import styles from './TrustBar.module.css';
 

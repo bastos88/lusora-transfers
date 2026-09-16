@@ -1,32 +1,74 @@
+# =========================
 # Dependencies
+# =========================
 node_modules/
+backend/vendor/
 
-# Environment variables and local secrets
+
+# =========================
+# Environment variables
+# =========================
 .env
 .env.*
 !.env.example
 *.local
 
-# Build outputs and test coverage
+
+# =========================
+# Next.js
+# =========================
+.next/
+out/
+
+
+# =========================
+# Laravel
+# =========================
+backend/database/*.sqlite
+backend/storage/logs/*.log
+backend/storage/framework/cache/*
+backend/storage/framework/sessions/*
+backend/storage/framework/views/
+
+
+# =========================
+# Build outputs / coverage
+# =========================
 dist/
 build/
 coverage/
 .nyc_output/
 
-# Tool caches and generated metadata
+
+# =========================
+# Tool caches
+# =========================
 *.tsbuildinfo
 .vite/
 .vitest/
 .eslintcache
 .cache/
 
-# Generated JavaScript declarations for TypeScript config files
+
+# =========================
+# Playwright / generated output
+# =========================
+.playwright-cli/
+output/
+
+
+# =========================
+# Generated JS declarations
+# =========================
 vite.config.js
 vite.config.d.ts
 vitest.config.js
 vitest.config.d.ts
 
-# Logs and diagnostic reports
+
+# =========================
+# Logs
+# =========================
 *.log
 logs/
 npm-debug.log*
@@ -34,7 +76,10 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+
+# =========================
 # Temporary files
+# =========================
 tmp/
 temp/
 *.tmp
@@ -45,7 +90,10 @@ temp/
 *.orig
 *.zip
 
-# Editors and operating systems
+
+# =========================
+# Editors / OS
+# =========================
 .vscode/
 .idea/
 .vs/
@@ -53,6 +101,9 @@ temp/
 Thumbs.db
 Desktop.ini
 
-# Deployment providers
+
+# =========================
+# Deployment
+# =========================
 .vercel/
 .netlify/

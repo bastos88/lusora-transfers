@@ -1,13 +1,13 @@
-import avatar216 from '../assets/avatars/ui-faces-216.jpg';
-import avatar215 from '../assets/avatars/ui-faces-215.jpg';
-import avatar214 from '../assets/avatars/ui-faces-214.jpg';
-import avatar213 from '../assets/avatars/ui-faces-213.jpg';
-import avatar217 from '../assets/avatars/ui-faces-217.jpg';
-import anitaAvatar from '../assets/avatars/ui-faces-219.jpg';
-import marcoAvatar from '../assets/avatars/ui-faces-218.jpg';
-import carolinaAvatar from '../assets/avatars/ui-faces-220.jpg';
-import jamesAvatar from '../assets/avatars/ui-faces-222.jpg';
-import beatrizAvatar from '../assets/avatars/ui-faces-221.jpg';
+const avatar216 = '/assets/avatars/ui-faces-216.jpg';
+const avatar215 = '/assets/avatars/ui-faces-215.jpg';
+const avatar214 = '/assets/avatars/ui-faces-214.jpg';
+const avatar213 = '/assets/avatars/ui-faces-213.jpg';
+const avatar217 = '/assets/avatars/ui-faces-217.jpg';
+const anitaAvatar = '/assets/avatars/ui-faces-219.jpg';
+const marcoAvatar = '/assets/avatars/ui-faces-218.jpg';
+const carolinaAvatar = '/assets/avatars/ui-faces-220.jpg';
+const jamesAvatar = '/assets/avatars/ui-faces-222.jpg';
+const beatrizAvatar = '/assets/avatars/ui-faces-221.jpg';
 import type { Testimonial } from '../types/travel';
 
 export const testimonials: Testimonial[] = [

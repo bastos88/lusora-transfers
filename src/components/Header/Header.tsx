@@ -1,5 +1,5 @@
 import type { MouseEvent } from 'react';
-import logo from '../../assets/images/luso-logo.png';
+const logo = '/assets/images/luso-logo.png';
 import { navigationItems } from '../../data/navigation';
 import { useMobileMenu } from '../../hooks/useMobileMenu';
 import type { NavigateFunction } from '../../types/travel';

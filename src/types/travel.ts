@@ -25,6 +25,7 @@ export interface BookingFormValues {
   returnDate: string;
   returnTime: string;
   passengers: number;
+  luggage?: number;
 }
 
 export type BookingFormErrors = Partial<Record<BookingField, string>>;
@@ -119,6 +120,10 @@ export interface BookingConfirmation {
   customer: CheckoutFormValues;
   total: number;
   createdAt: string;
+  vehicle?: Vehicle;
+  service?: TransferService;
+  statusLabel?: string;
+  paymentStatusLabel?: string;
 }
 
 export interface PricingBreakdown {

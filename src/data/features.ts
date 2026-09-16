@@ -1,7 +1,7 @@
-import doorIcon from '../assets/icons/door.png';
-import handshakeIcon from '../assets/icons/handshake.png';
-import offerIcon from '../assets/icons/offer.png';
-import timeIcon from '../assets/icons/time.png';
+const doorIcon = '/assets/icons/door.png';
+const handshakeIcon = '/assets/icons/handshake.png';
+const offerIcon = '/assets/icons/offer.png';
+const timeIcon = '/assets/icons/time.png';
 import type { Feature } from '../types/travel';
 
 export const features: Feature[] = [

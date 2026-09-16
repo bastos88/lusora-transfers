@@ -34,12 +34,12 @@ function validate(values: CheckoutFormValues): CheckoutFormErrors {
 
 export function useCheckoutForm(
   user: AuthUser | null,
-  onValidSubmit: (values: CheckoutFormValues) => void,
+  onValidSubmit: (values: CheckoutFormValues) => void | Promise<void>,
 ) {
   const [values, setValues] = useState<CheckoutFormValues>(() => ({
     fullName: user?.name ?? '',
     email: user?.email ?? '',
-    phone: '',
+    phone: user?.phone ?? '',
     flightNumber: '',
     notes: '',
     paymentMethod: 'card-on-arrival',
@@ -47,6 +47,7 @@ export function useCheckoutForm(
   }));
   const [errors, setErrors] = useState<CheckoutFormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const updateField = <K extends keyof CheckoutFormValues>(
     field: K,
@@ -65,7 +66,7 @@ export function useCheckoutForm(
     updateField('notes', event.target.value);
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (isSubmitting) {
@@ -80,13 +81,15 @@ export function useCheckoutForm(
     }
 
     setIsSubmitting(true);
-    onValidSubmit(values);
+    setSubmitError('');
+    try { await onValidSubmit(values); } catch (e) { setSubmitError(e instanceof Error ? e.message : 'Não foi possível criar a reserva.'); } finally { setIsSubmitting(false); }
   };
 
   return {
     values,
     errors,
     isSubmitting,
+    submitError,
     updateField,
     handleInputChange,
     handleNotesChange,

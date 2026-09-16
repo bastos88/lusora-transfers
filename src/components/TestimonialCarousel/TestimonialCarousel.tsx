@@ -1,17 +1,18 @@
-import { testimonials } from '../../data/testimonials';
+import { useCatalog } from '../../features/AppProvider';
 import { useAutoCarousel } from '../../hooks/useAutoCarousel';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { ArrowIcon } from '../Icons/Icons';
 import styles from './TestimonialCarousel.module.css';
 
 export function TestimonialCarousel() {
+  const { testimonials } = useCatalog();
   const prefersReducedMotion = useReducedMotion();
   const { activeIndex, setActiveIndex, moveBy } = useAutoCarousel({
     itemCount: testimonials.length,
     disabled: prefersReducedMotion,
   });
   const activeTestimonial = testimonials[activeIndex] ?? testimonials[0];
-  const visibleTestimonials = [-2, -1, 0, 1, 2].map((offset) => {
+  const visibleTestimonials = (testimonials.length < 5 ? testimonials.map((_, i) => i) : [-2, -1, 0, 1, 2]).map((offset) => {
     const index = (activeIndex + offset + testimonials.length) % testimonials.length;
     return { testimonial: testimonials[index], index };
   });
@@ -19,6 +20,7 @@ export function TestimonialCarousel() {
   const handlePrevious = () => moveBy(-1);
   const handleNext = () => moveBy(1);
 
+  if (!testimonials.length) return null;
   return (
     <div className={styles.carousel} aria-roledescription="carrossel" aria-label="Avaliações de clientes">
       <div className={styles.picker}>

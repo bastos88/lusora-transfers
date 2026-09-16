@@ -1,8 +1,9 @@
+import { useCatalog } from '../../features/AppProvider';
 import { SectionHeading } from '../../components/SectionHeading/SectionHeading';
-import { faqs } from '../../data/faqs';
 import styles from './Faq.module.css';
 
 export function Faq() {
+  const { faqs } = useCatalog();
   return (
     <section className={styles.section} id="faq" aria-labelledby="faq-title">
       <div className={styles.inner}>

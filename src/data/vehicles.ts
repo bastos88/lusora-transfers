@@ -1,7 +1,7 @@
-import executiveImage from '../assets/vehicles/executive.webp';
-import minivanExecutiveImage from '../assets/vehicles/minivan-executive.webp';
-import minivanImage from '../assets/vehicles/minivan.webp';
-import standardImage from '../assets/vehicles/standard.webp';
+const executiveImage = '/assets/vehicles/executive.webp';
+const minivanExecutiveImage = '/assets/vehicles/minivan-executive.webp';
+const minivanImage = '/assets/vehicles/minivan.webp';
+const standardImage = '/assets/vehicles/standard.webp';
 import type { Vehicle } from '../types/travel';
 
 export const vehicles: Vehicle[] = [

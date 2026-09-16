@@ -48,7 +48,7 @@ export function OrderSummary({ booking, service, vehicle, pricing, action }: Ord
         <strong>{formatCurrency(pricing.total)}</strong>
       </div>
 
-      <p className={styles.note}>Valores demonstrativos com IVA incluído. O preço final é confirmado antes da reserva.</p>
+      <p className={styles.note}>O preço final é calculado no checkout. Cancelamento gratuito até 24 horas antes da recolha.</p>
       <div className={styles.secure}><ShieldIcon /> Reserva segura e cancelamento conforme as condições do serviço.</div>
       {action ? <div className={styles.action}>{action}</div> : null}
     </aside>

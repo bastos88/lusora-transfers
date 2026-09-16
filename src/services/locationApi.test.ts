@@ -6,20 +6,14 @@ describe('locationApi', () => {
     vi.unstubAllGlobals();
   });
 
-  it('cria a consulta Geoapify com os parâmetros obrigatórios', async () => {
-    vi.stubEnv('VITE_GEOAPIFY_API_KEY', 'test-key');
+  it('envia apenas a consulta ao proxy Laravel', async () => {
+    
     const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ results: [] }) });
     vi.stubGlobal('fetch', fetchMock);
     await searchLocations('  Porto   Centro ');
-    const url = new URL(String(fetchMock.mock.calls[0][0]));
-    expect(Object.fromEntries(url.searchParams)).toMatchObject({
-      text: 'porto centro',
-      format: 'json',
-      lang: 'pt',
-      limit: '6',
-      filter: 'countrycode:pt',
-      bias: 'proximity:-8.6291,41.1579',
-    });
+    const url = new URL(String(fetchMock.mock.calls[0][0]), 'http://localhost');
+    expect(url.pathname).toBe('/api/locations');
+    expect(Object.fromEntries(url.searchParams)).toEqual({q:'porto centro'});
   });
 
   it('normaliza resultados, converte coordenadas, remove duplicados e descarta inválidos', () => {
@@ -53,11 +47,8 @@ describe('locationApi', () => {
     ]);
   });
 
-  it('não chama fetch quando falta a chave', async () => {
-    vi.stubEnv('VITE_GEOAPIFY_API_KEY', '');
-    const fetchMock = vi.fn();
-    vi.stubGlobal('fetch', fetchMock);
-    await expect(searchLocations('Porto')).rejects.toMatchObject({ kind: 'configuration' });
-    expect(fetchMock).not.toHaveBeenCalled();
+  it('apresenta indisponibilidade do backend', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ok:false,status:503}));
+    await expect(searchLocations('Porto')).rejects.toMatchObject({kind:'http'});
   });
 });
