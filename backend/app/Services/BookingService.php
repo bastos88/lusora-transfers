@@ -1,51 +1,175 @@
 <?php
+
 namespace App\Services;
+
 use App\Enums\BookingStatus;
-use App\Http\Resources\{VehicleResource,TransferServiceResource};
-use App\Models\{Booking,User,Vehicle,TransferService};
+use App\Http\Resources\{VehicleResource, TransferServiceResource};
+use App\Models\{Booking, User, Vehicle, TransferService};
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
-class BookingService {
+
+class BookingService
+{
     public function __construct(private PricingService $pricing) {}
-    public function create(User $user,array $data): Booking {
-        return DB::transaction(function() use($user,$data) {
-            User::whereKey($user->id)->lockForUpdate()->firstOrFail();
-            $hash=hash('sha256',json_encode($data,JSON_THROW_ON_ERROR));
-            $existing=$user->bookings()->where('idempotency_key',$data['idempotency_key'])->first();
-            if($existing) { abort_unless(hash_equals($existing->request_hash,$hash),409,'A chave já foi usada para outra reserva.'); return $existing; }
-            $vehicle=Vehicle::where('slug',$data['vehicle_id'])->lockForUpdate()->firstOrFail();
-            $service=TransferService::where('slug',$data['service_id'])->lockForUpdate()->firstOrFail();
-            $price=$this->pricing->calculate($data,$vehicle,$service);
-            if((int)$data['expected_total_cents']!==$price['total_cents']) throw ValidationException::withMessages(['expected_total_cents'=>'O preço foi atualizado. Reveja o orçamento antes de confirmar.']);
-            return Booking::create([
-                'user_id'=>$user->id,'vehicle_id'=>$vehicle->id,'transfer_service_id'=>$service->id,
-                'reference'=>'LUS-'.now()->year.'-'.strtoupper(bin2hex(random_bytes(6))),
-                'idempotency_key'=>$data['idempotency_key'],'request_hash'=>$hash,
-                'trip_type'=>$data['trip_type'],'origin'=>$data['origin'],'destination'=>$data['destination'],
-                'pickup_at'=>CarbonImmutable::parse($data['pickup_at'])->utc(),
-                'return_at'=>isset($data['return_at'])?CarbonImmutable::parse($data['return_at'])->utc():null,
-                'passengers'=>$data['passengers'],'luggage'=>$data['luggage'],
-                'customer_name'=>$data['customer_name'],'customer_email'=>$data['customer_email'],'customer_phone'=>$data['customer_phone'],
-                'flight_number'=>$data['flight_number']??null,'notes'=>$data['notes']??null,
-                'subtotal_cents'=>$price['subtotal_cents'],'total_cents'=>$price['total_cents'],'price_breakdown'=>$price,
-                'catalog_snapshot'=>['vehicle'=>(new VehicleResource($vehicle))->resolve(),'service'=>(new TransferServiceResource($service))->resolve()],
-                'status'=>BookingStatus::Pending,'payment_status'=>'pending','payment_method'=>$data['payment_method'],'terms_accepted_at'=>now(),
+    public function create(User $user, array $data): Booking
+    {
+        Log::info('BOOKING_DEBUG: iniciou criação', [
+            'user_id' => $user->id,
+            'vehicle_id' => $data['vehicle_id'] ?? null,
+            'service_id' => $data['service_id'] ?? null,
+        ]);
+
+        try {
+            return DB::transaction(function () use ($user, $data) {
+
+                Log::info('BOOKING_DEBUG: iniciou transaction');
+
+                User::whereKey($user->id)->lockForUpdate()->firstOrFail();
+
+                Log::info('BOOKING_DEBUG: usuário encontrado');
+
+                $hash = hash(
+                    'sha256',
+                    json_encode($data, JSON_THROW_ON_ERROR)
+                );
+
+                $existing = $user->bookings()
+                    ->where('idempotency_key', $data['idempotency_key'])
+                    ->first();
+
+                if ($existing) {
+                    Log::info('BOOKING_DEBUG: reserva existente');
+
+                    abort_unless(
+                        hash_equals($existing->request_hash, $hash),
+                        409,
+                        'A chave já foi usada para outra reserva.'
+                    );
+
+                    return $existing;
+                }
+
+                $vehicle = Vehicle::where('slug', $data['vehicle_id'])
+                    ->lockForUpdate()
+                    ->firstOrFail();
+
+                Log::info('BOOKING_DEBUG: veículo encontrado', [
+                    'vehicle_id' => $vehicle->id,
+                ]);
+
+                $service = TransferService::where('slug', $data['service_id'])
+                    ->lockForUpdate()
+                    ->firstOrFail();
+
+                Log::info('BOOKING_DEBUG: serviço encontrado', [
+                    'service_id' => $service->id,
+                ]);
+
+                $price = $this->pricing->calculate(
+                    $data,
+                    $vehicle,
+                    $service
+                );
+
+                Log::info('BOOKING_DEBUG: preço calculado', [
+                    'total_cents' => $price['total_cents'],
+                ]);
+
+                if ((int) $data['expected_total_cents'] !== $price['total_cents']) {
+                    throw ValidationException::withMessages([
+                        'expected_total_cents' =>
+                        'O preço foi atualizado. Reveja o orçamento antes de confirmar.',
+                    ]);
+                }
+
+                Log::info('BOOKING_DEBUG: antes do Booking::create');
+
+                $booking = Booking::create([
+                    'user_id' => $user->id,
+                    'vehicle_id' => $vehicle->id,
+                    'transfer_service_id' => $service->id,
+
+                    'reference' =>
+                    'LUS-' . now()->year . '-' .
+                        strtoupper(bin2hex(random_bytes(6))),
+
+                    'idempotency_key' => $data['idempotency_key'],
+                    'request_hash' => $hash,
+
+                    'trip_type' => $data['trip_type'],
+                    'origin' => $data['origin'],
+                    'destination' => $data['destination'],
+
+                    'pickup_at' =>
+                    CarbonImmutable::parse($data['pickup_at'])->utc(),
+
+                    'return_at' =>
+                    isset($data['return_at'])
+                        ? CarbonImmutable::parse($data['return_at'])->utc()
+                        : null,
+
+                    'passengers' => $data['passengers'],
+                    'luggage' => $data['luggage'],
+
+                    'customer_name' => $data['customer_name'],
+                    'customer_email' => $data['customer_email'],
+                    'customer_phone' => $data['customer_phone'],
+
+                    'flight_number' => $data['flight_number'] ?? null,
+                    'notes' => $data['notes'] ?? null,
+
+                    'subtotal_cents' => $price['subtotal_cents'],
+                    'total_cents' => $price['total_cents'],
+                    'price_breakdown' => $price,
+
+                    'catalog_snapshot' => [
+                        'vehicle' => (new VehicleResource($vehicle))->resolve(),
+
+                        'service' => (new TransferServiceResource($service))->resolve(),
+                    ],
+
+                    'status' => BookingStatus::Pending,
+                    'payment_status' => 'pending',
+                    'payment_method' => $data['payment_method'],
+                    'terms_accepted_at' => now(),
+                ]);
+
+                Log::info('BOOKING_DEBUG: reserva criada', [
+                    'booking_id' => $booking->id,
+                ]);
+
+                return $booking;
+            }, 3);
+        } catch (\Throwable $e) {
+
+            Log::error('BOOKING_DEBUG: ERRO', [
+                'exception' => get_class($e),
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
             ]);
-        },3);
+
+            throw $e;
+        }
     }
-    public function cancel(Booking $booking,bool $admin=false): Booking {
-        return DB::transaction(function() use($booking,$admin) {
-            $b=Booking::whereKey($booking->id)->lockForUpdate()->firstOrFail();
-            if((!$admin && !$b->canBeCancelled()) || !$b->status->canTransitionTo(BookingStatus::Cancelled)) throw ValidationException::withMessages(['status'=>'Esta reserva já não pode ser cancelada.']);
-            $b->update(['status'=>BookingStatus::Cancelled]); return $b;
+    public function cancel(Booking $booking, bool $admin = false): Booking
+    {
+        return DB::transaction(function () use ($booking, $admin) {
+            $b = Booking::whereKey($booking->id)->lockForUpdate()->firstOrFail();
+            if ((!$admin && !$b->canBeCancelled()) || !$b->status->canTransitionTo(BookingStatus::Cancelled)) throw ValidationException::withMessages(['status' => 'Esta reserva já não pode ser cancelada.']);
+            $b->update(['status' => BookingStatus::Cancelled]);
+            return $b;
         });
     }
-    public function transition(Booking $booking,BookingStatus $next): Booking {
-        return DB::transaction(function() use($booking,$next) {
-            $b=Booking::whereKey($booking->id)->lockForUpdate()->firstOrFail();
-            if(!$b->status->canTransitionTo($next)) throw ValidationException::withMessages(['status'=>'Transição de estado inválida.']);
-            $b->update(['status'=>$next]); return $b;
+    public function transition(Booking $booking, BookingStatus $next): Booking
+    {
+        return DB::transaction(function () use ($booking, $next) {
+            $b = Booking::whereKey($booking->id)->lockForUpdate()->firstOrFail();
+            if (!$b->status->canTransitionTo($next)) throw ValidationException::withMessages(['status' => 'Transição de estado inválida.']);
+            $b->update(['status' => $next]);
+            return $b;
         });
     }
 }
