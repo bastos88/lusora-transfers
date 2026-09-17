@@ -29,6 +29,20 @@ class BookingService
                 User::whereKey($user->id)->lockForUpdate()->firstOrFail();
 
                 Log::info('BOOKING_DEBUG: usuário encontrado');
+                try {
+                    $test = DB::select('SELECT 1 AS test');
+
+                    Log::info('BOOKING_DEBUG: SELECT 1 dentro da transaction funcionou', [
+                        'result' => $test[0]->test ?? null,
+                    ]);
+                } catch (\Throwable $e) {
+                    Log::error('BOOKING_DEBUG: SELECT 1 FALHOU', [
+                        'exception' => get_class($e),
+                        'message' => $e->getMessage(),
+                    ]);
+
+                    throw $e;
+                }
 
                 $hash = hash(
                     'sha256',
