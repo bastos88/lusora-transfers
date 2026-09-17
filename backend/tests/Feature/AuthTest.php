@@ -40,4 +40,14 @@ class AuthTest extends TestCase {
   $this->seed();$user=User::factory()->create();$user->role='admin';$user->save();$this->actingAs($user);
   foreach(['/admin','/admin/bookings','/admin/vehicles','/admin/transfer-services','/admin/testimonials','/admin/faqs','/admin/users'] as $url) $this->get($url)->assertOk();
  }
+ public function test_admin_assets_use_forwarded_https_scheme(): void {
+  $response=$this->withHeaders([
+   'Host'=>'lusora-transfers-api.vercel.app',
+   'X-Forwarded-Host'=>'lusora-transfers-api.vercel.app',
+   'X-Forwarded-Proto'=>'https',
+  ])->get('/admin/login');
+  $response->assertOk()
+   ->assertSee('https://lusora-transfers-api.vercel.app/css/filament',false)
+   ->assertDontSee('http://lusora-transfers-api.vercel.app',false);
+ }
 }

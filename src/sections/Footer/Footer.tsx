@@ -74,7 +74,6 @@ export function Footer({ onNavigate, isAuthenticated = false }: FooterProps) {
 
       <div className={styles.bottom}>
         <span>© {new Date().getFullYear()} Lusóra Tranfers. Todos os direitos reservados.</span>
-        <span>Aplicação demonstrativa em React e TypeScript.</span>
       </div>
     </footer>
   );
