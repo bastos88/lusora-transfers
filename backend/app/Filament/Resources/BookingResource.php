@@ -83,17 +83,20 @@ class BookingResource extends Resource
       Action::make('estado')
         ->label('Alterar estado')
         ->icon('heroicon-o-arrow-path')
+        ->visible(fn(Booking $record) => $record->status->allowedTransitions() !== [])
         ->schema([
           Select::make('status')
             ->label('Novo estado')
-            ->options(BookingStatus::class)
+            ->options(fn(Booking $record): array => collect($record->status->allowedTransitions())
+              ->mapWithKeys(fn(BookingStatus $status): array => [$status->value => $status->getLabel()])
+              ->all())
             ->required(),
         ])
         ->action(
           fn(Booking $record, array $data) =>
           app(BookingService::class)->transition(
             $record,
-            $data['status']
+            BookingStatus::from($data['status'])
           )
         ),
 

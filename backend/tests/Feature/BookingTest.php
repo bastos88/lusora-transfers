@@ -71,6 +71,12 @@ class BookingTest extends TestCase {
   $this->expectException(\Illuminate\Validation\ValidationException::class);
   app(BookingService::class)->transition($booking,BookingStatus::Completed);
  }
+ public function test_admin_can_advance_booking_status(): void {
+  $user=User::factory()->create();
+  $booking=app(BookingService::class)->create($user,$this->payload());
+  app(BookingService::class)->transition($booking,BookingStatus::Confirmed);
+  $this->assertSame(BookingStatus::Confirmed,$booking->fresh()->status);
+ }
  public function test_guests_cannot_create_or_list_bookings(): void {
   $this->postJson('/api/bookings',$this->payload())->assertUnauthorized();
   $this->getJson('/api/bookings')->assertUnauthorized();
