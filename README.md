@@ -1,121 +1,197 @@
-# Lusóra Tranfers — Reserva de transfers
+# Lusora Transfers
 
-Aplicação frontend responsiva para pesquisa e reserva demonstrativa de transfers privados em Portugal, com preferência de resultados para a região do Porto.
+Plataforma de reservas de transfers privados em Portugal, com frontend em Next.js e API Laravel. O projeto inclui pesquisa de localidades, cálculo de orçamento, autenticação de cliente, criação de reservas, área de cliente e administração operacional no backend.
 
-Construída com React 18, TypeScript estrito, Vite, CSS Modules, Vitest e Testing Library. Não utiliza biblioteca de componentes nem cliente HTTP externo.
+## Stack
+
+- Next.js 16, React 19 e TypeScript no frontend.
+- CSS Modules e CSS global próprio, sem biblioteca de componentes.
+- Vitest e Testing Library para testes do frontend.
+- Laravel 13, PHP 8.3, Sanctum, Filament e MySQL no backend.
+- Stripe para fluxo de pagamento online no backend.
+- Geoapify para autocomplete de localidades.
 
 ## Funcionalidades
 
-- Autocomplete de origem e destino com a Geoapify Address Autocomplete API.
-- Pesquisa limitada a Portugal, com preferência geográfica pela região do Porto.
-- Combobox acessível com navegação por teclado e anúncios através de `aria-live`.
-- Validação que exige localidades selecionadas e impede origem e destino iguais.
-- Escolha do tipo de viagem, datas, horários e número de passageiros.
+- Pesquisa de origem e destino com autocomplete limitado a Portugal e preferência pela região do Porto.
+- Proxy de localidades via backend, mantendo a chave Geoapify fora do bundle do navegador.
+- Formulário de reserva com tipo de viagem, datas, horários, passageiros e bagagem.
 - Seleção de serviço e viatura compatível com o grupo.
-- Cálculo demonstrativo do preço para ida ou ida e volta.
-- Checkout demonstrativo e página de confirmação.
-- Estado da reserva preservado em `sessionStorage` durante o fluxo.
-- Área de cliente demonstrativa preservada em `localStorage`.
+- Cálculo de orçamento e validação do total esperado antes de criar a reserva.
+- Checkout com pagamento no veículo ou checkout Stripe, conforme configuração.
+- Autenticação, registo, recuperação de palavra-passe e perfil de cliente.
+- Área de cliente com listagem, detalhe e cancelamento de reservas.
+- Painel administrativo Filament para gerir reservas, viaturas, serviços, FAQs, testemunhos e utilizadores.
 
-## Configuração local
+## Estrutura
 
-Instale as dependências:
+```text
+app/                 Rotas Next.js App Router
+src/                 Componentes, vistas, serviços, hooks, dados e estilos do frontend
+backend/             API Laravel, Filament, modelos, migrations, testes e integrações
+public/              Assets públicos do frontend
+docs/                Documentação auxiliar
+compose.yaml         MySQL local para desenvolvimento
+```
+
+## Requisitos
+
+- Node.js compatível com Next.js 16.
+- npm.
+- PHP 8.3 ou superior.
+- Composer.
+- MySQL 8.4, local ou via Docker Compose.
+
+## Configuração do frontend
+
+Instale as dependências na raiz do projeto:
 
 ```bash
 npm install
 ```
 
-Crie um ficheiro `.env.local` a partir de `.env.example`:
+Crie `.env.local` a partir de `.env.example`:
 
 ```env
-VITE_GEOAPIFY_API_KEY=a_sua_chave
+BACKEND_URL=http://127.0.0.1:8000
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
-Depois, inicie o servidor de desenvolvimento:
+`BACKEND_URL` é usado pelo servidor Next.js para ler catálogo e dados vindos da API Laravel. `NEXT_PUBLIC_SITE_URL` define a origem pública usada em metadados e links.
+
+Inicie o frontend:
 
 ```bash
 npm run dev
 ```
 
-### Segurança da chave Geoapify
+Por padrão, a aplicação fica disponível em `http://localhost:3000`.
 
-Variáveis com o prefixo `VITE_*` são incluídas no bundle do navegador. Esta chave não deve ser tratada como um segredo de servidor.
+## Configuração do backend
 
-No painel da Geoapify:
-
-- restrinja a chave aos domínios e origens autorizados;
-- autorize apenas as APIs necessárias;
-- configure separadamente os domínios de desenvolvimento e produção;
-- não coloque uma chave real em `.env.example` ou noutro ficheiro versionado.
-
-O ficheiro `.env.local` está ignorado pelo Git. Sem a variável configurada, a aplicação não executa o pedido e apresenta uma mensagem adequada. A reserva continua bloqueada até o utilizador selecionar uma localidade válida.
-
-## Autocomplete de localidades
-
-A integração utiliza `GET https://api.geoapify.com/v1/geocode/autocomplete` com estas regras:
-
-- pesquisa iniciada a partir de três caracteres;
-- debounce de 350 ms;
-- máximo de seis sugestões em português;
-- resultados limitados a Portugal;
-- preferência geográfica pela região do Porto;
-- cancelamento de pedidos anteriores com `AbortController`;
-- cache em memória por consulta normalizada;
-- proteção contra respostas antigas substituírem pesquisas mais recentes.
-
-O código específico da Geoapify está isolado em `src/services/locationApi.ts`. Os componentes trabalham apenas com o tipo de domínio `LocationOption`, permitindo substituir o fornecedor sem acoplar as páginas à resposta externa.
-
-As respostas são validadas antes da utilização. Resultados inválidos ou duplicados são descartados, e erros de configuração, rede, resposta e limite da API recebem mensagens distintas.
-
-## Acessibilidade
-
-Os campos de localidade implementam o padrão ARIA de combobox:
-
-- `role="combobox"`, `aria-autocomplete`, `aria-expanded` e `aria-activedescendant`;
-- sugestões com `role="listbox"` e `role="option"`;
-- suporte a `ArrowDown`, `ArrowUp`, `Home`, `End`, `Enter` e `Escape`;
-- foco mantido no input durante a navegação;
-- erros associados através de `aria-invalid` e `aria-describedby`;
-- estados e quantidade de resultados anunciados com `aria-live`.
-
-## Persistência e compatibilidade
-
-A reserva guarda os objetos completos de origem e destino no `sessionStorage`, incluindo identificador, label e coordenadas. Ao regressar ao formulário, as seleções são restauradas.
-
-Reservas antigas que guardavam origem ou destino apenas como strings são rejeitadas com segurança.
-
-## Fluxo da aplicação
-
-1. O utilizador seleciona origem, destino, datas, horários e passageiros.
-2. A aplicação apresenta serviços e viaturas disponíveis.
-3. O utilizador escolhe o serviço e uma viatura compatível.
-4. O preço estimado é calculado.
-5. O checkout recolhe os dados do passageiro e a forma de pagamento no veículo.
-6. A aplicação apresenta uma confirmação demonstrativa.
-
-## Páginas
-
-- `/` — landing page e formulário de pesquisa;
-- `/conta` — login, criação de conta e sessão demonstrativa;
-- `/transfers` — seleção do serviço e da viatura;
-- `/checkout` — dados do passageiro e confirmação;
-- `/confirmacao` — referência e resumo da reserva.
-
-## Comandos disponíveis
+Entre na pasta do backend:
 
 ```bash
-npm run dev          # servidor de desenvolvimento
-npm run build        # valida os tipos e gera a versão de produção
-npm run preview      # pré-visualiza o build localmente
-npm run lint         # executa o ESLint
-npm run type-check   # verifica os tipos TypeScript
-npm run test         # executa os testes uma vez
-npm run test:watch   # executa os testes em modo interativo
-npm run format       # formata os ficheiros com Prettier
-npm run format:check # verifica a formatação
+cd backend
+composer install
+npm install
 ```
 
-Para validar o projeto antes de publicar:
+Crie o ficheiro `.env` do Laravel e gere a chave da aplicação:
+
+```bash
+copy .env.example .env
+php artisan key:generate
+```
+
+Configure no `.env` a base de dados, a URL do frontend e as chaves externas necessárias. Os nomes exatos dependem do ambiente, mas estes são os pontos principais:
+
+```env
+APP_URL=http://127.0.0.1:8000
+FRONTEND_URL=http://localhost:3000
+GEOAPIFY_API_KEY=a_sua_chave_geoapify
+STRIPE_KEY=a_sua_chave_publica_stripe
+STRIPE_SECRET=a_sua_chave_secreta_stripe
+STRIPE_WEBHOOK_SECRET=o_segredo_do_webhook
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=lusora
+DB_USERNAME=lusora
+DB_PASSWORD=a_sua_password
+```
+
+Se quiser usar o MySQL incluído no projeto, defina as passwords no ambiente e suba o serviço:
+
+```bash
+$env:DB_PASSWORD="a_sua_password"
+$env:MYSQL_ROOT_PASSWORD="a_password_root"
+docker compose up -d mysql
+```
+
+Depois execute as migrations e, se necessário, os seeders:
+
+```bash
+php artisan migrate
+php artisan db:seed
+```
+
+Inicie a API:
+
+```bash
+php artisan serve
+```
+
+Para usar o script de desenvolvimento do Laravel, que arranca servidor, fila, logs e Vite do backend em paralelo:
+
+```bash
+composer run dev
+```
+
+## Painel administrativo
+
+O backend usa Filament. Depois de configurar o Laravel, crie um administrador com o comando do projeto, informando o email do utilizador:
+
+```bash
+php artisan lusora:create-admin admin@example.com
+```
+
+Aceda ao painel em:
+
+```text
+http://127.0.0.1:8000/admin
+```
+
+## Rotas principais
+
+Frontend:
+
+- `/` - página inicial e formulário de pesquisa.
+- `/transfers` - seleção de serviço e viatura.
+- `/checkout` - dados do passageiro e pagamento.
+- `/confirmation` - confirmação da reserva.
+- `/login`, `/register`, `/forgot-password`, `/reset-password` - autenticação.
+- `/customer` - área de cliente.
+- `/customer/bookings` - reservas do cliente.
+- `/customer/profile` - perfil do cliente.
+
+API Laravel:
+
+- `/api/locations` - autocomplete de localidades via Geoapify.
+- `/api/quotes` - cálculo de orçamento.
+- `/api/bookings` - criação e consulta de reservas autenticadas.
+- `/api/vehicles` - catálogo de viaturas.
+- `/api/login`, `/api/register`, `/api/logout`, `/api/user` - autenticação e sessão.
+- `/api/stripe/webhook` - webhook Stripe.
+
+## Comandos úteis
+
+Na raiz do projeto:
+
+```bash
+npm run dev          # servidor Next.js de desenvolvimento
+npm run build        # build de produção do frontend
+npm run start        # executa o build Next.js
+npm run lint         # ESLint em src e app
+npm run type-check   # verificação TypeScript
+npm run test         # testes do frontend
+npm run test:watch   # testes em modo watch
+npm run format       # formata com Prettier
+npm run format:check # verifica formatação
+```
+
+No backend:
+
+```bash
+composer run dev     # servidor Laravel, fila, logs e Vite em paralelo
+composer run test    # testes PHPUnit/Laravel
+php artisan migrate  # migrations
+php artisan db:seed  # seeders
+npm run dev          # Vite do backend
+npm run build        # build dos assets do backend
+```
+
+Validação recomendada antes de publicar alterações no frontend:
 
 ```bash
 npm run lint
@@ -124,44 +200,46 @@ npm run test
 npm run build
 ```
 
-Os testes da integração mockam `fetch` e não dependem de acesso à rede nem de uma chave real.
+Validação recomendada no backend:
 
-## Estrutura principal
-
-```text
-src/
-├── assets/
-├── components/
-│   ├── BookingForm/
-│   ├── LocationAutocomplete/
-│   ├── OrderSummary/
-│   └── TripSummary/
-├── data/
-├── hooks/
-│   ├── useBookingForm.ts
-│   ├── useLocationAutocomplete.ts
-│   └── useStoredState.ts
-├── pages/
-├── sections/
-├── services/
-│   └── locationApi.ts
-├── styles/
-├── test/
-├── types/
-├── utils/
-│   └── bookingStorage.ts
-├── App.tsx
-└── main.tsx
+```bash
+cd backend
+composer run test
+npm run build
 ```
 
-## Limitações da demonstração
+## Geoapify
 
-- A autenticação existe apenas no frontend.
-- Os serviços, preços e viaturas são dados demonstrativos.
-- Não existe consulta real de disponibilidade.
-- Nenhuma reserva é enviada para um backend.
-- Não são processados dados reais de cartão ou pagamentos online.
-- Não existe fallback silencioso para outro fornecedor de localidades.
-- Texto livre não é aceite quando a Geoapify está indisponível; alterar essa regra exige uma decisão comercial explícita.
+A pesquisa de localidades chama `/api/locations` no frontend. O backend encaminha o pedido para `https://api.geoapify.com/v1/geocode/autocomplete` com a chave `GEOAPIFY_API_KEY`.
 
-Para produção, ainda são necessários backend, persistência de reservas, autenticação real, disponibilidade, preços comerciais, notificações, documentos legais e eventual integração de pagamentos.
+Regras implementadas no frontend:
+
+- pesquisa a partir de três caracteres;
+- debounce antes do pedido;
+- cache em memória por consulta normalizada;
+- cancelamento de pedidos anteriores com `AbortController`;
+- validação e normalização dos resultados recebidos;
+- mensagens distintas para erro de configuração, rede, limite da API e ausência de resultados.
+
+A chave Geoapify deve ficar apenas no `.env` do backend. Restrinja a chave por domínio/origem e ative apenas as APIs necessárias no painel da Geoapify.
+
+## Persistência e estado
+
+- O fluxo de reserva preserva dados temporários no navegador para permitir avançar entre páginas.
+- A reserva final é criada no backend quando o checkout é submetido.
+- Reservas e dados de cliente exigem sessão autenticada via Laravel Sanctum.
+- O backend valida preço, passageiros, bagagem, datas e permissões antes de aceitar operações críticas.
+
+## Testes
+
+O frontend cobre serviços, hooks e vistas principais com Vitest e Testing Library. Os testes da pesquisa de localidades mockam `fetch`, por isso não dependem de rede nem de uma chave Geoapify real.
+
+O backend inclui testes de autenticação, reservas e Stripe em `backend/tests`.
+
+## Limitações e notas de produção
+
+- Os preços, serviços, viaturas e conteúdos podem depender dos seeders e do catálogo configurado no backend.
+- Disponibilidade real de viaturas, gestão operacional avançada e notificações devem ser revistas antes de produção.
+- Pagamentos Stripe exigem configuração das chaves e do webhook no ambiente final.
+- CORS, cookies, `APP_URL`, `FRONTEND_URL`, domínio público e HTTPS devem ser ajustados para o domínio de produção.
+- Não versione ficheiros `.env` com chaves reais.
