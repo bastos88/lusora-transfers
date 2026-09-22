@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import type { LocationOption } from '../../types/travel';
+import { formatDateForInput } from '../../utils/date';
 import { BookingForm } from './BookingForm';
 
 vi.mock('../LocationAutocomplete/LocationAutocomplete', () => ({
@@ -59,6 +60,12 @@ vi.mock('../LocationAutocomplete/LocationAutocomplete', () => ({
 }));
 
 describe('BookingForm', () => {
+  it('inicia a partida com a data atual', () => {
+    render(<BookingForm onSubmit={vi.fn()} />);
+
+    expect(screen.getByLabelText('Partida')).toHaveValue(formatDateForInput(new Date()));
+  });
+
   it('rejeita texto não selecionado', async () => {
     const user = userEvent.setup();
     const handleSubmit = vi.fn();

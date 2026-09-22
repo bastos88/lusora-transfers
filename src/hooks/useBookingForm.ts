@@ -7,7 +7,7 @@ const initialValues: BookingFormValues = {
   tripType: 'round-trip',
   origin: null,
   destination: null,
-  departureDate: addDaysFromToday(1),
+  departureDate: addDaysFromToday(0),
   departureTime: '10:00',
   returnDate: addDaysFromToday(4),
   returnTime: '18:00',
